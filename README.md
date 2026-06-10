@@ -591,28 +591,7 @@ Create admin product delete method
 
 ---
 
-## 11. Was ist noch nicht fertig?
-
-Diese Grundlage ist absichtlich noch kein fertiger Shop.
-
-Noch zu implementieren sind:
-
-```text
-Benutzeroberflaeche im ui-Ordner
-vollstaendige Login-Logik
-Passwort-Hashing
-Produkt-Suche und Filter
-Warenkorb-Logik
-Bestellhistorie
-Admin-Funktionen
-Tests
-```
-
-Die Grundlage sorgt nur dafuer, dass alle mit denselben Klassen und Methodennamen starten.
-
----
-
-## 12. Passwort-Hinweis
+## 11. Passwort-Hinweis
 
 In den User Stories steht, dass Passwoerter nicht im Klartext gespeichert werden duerfen.
 
@@ -628,7 +607,7 @@ Keine Klartext-Passwoerter in `.dat` Dateien speichern.
 
 ---
 
-## Benutzeroberfläche (UI)
+## 12. Benutzeroberfläche (UI)
 
 Die Benutzeroberfläche wird mit Java Swing umgesetzt.
 
