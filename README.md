@@ -651,21 +651,3 @@ JOptionPane darf für:
 - Bestätigungsdialoge
 
 verwendet werden.
-
----
-
-## 13. Kurze Zusammenfassung
-
-Vor dem getrennten Arbeiten brauchen wir:
-
-```text
-1. GitHub Repository
-2. main Branch mit dieser Grundlage
-3. gemeinsame Model-Klassen
-4. Service-Grundgerueste
-5. DataManager fuer Serialisierung
-6. README mit Regeln
-7. eigene Branches fuer jede Person
-```
-
-Danach koennen alle parallel arbeiten.
