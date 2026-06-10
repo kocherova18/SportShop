@@ -227,8 +227,6 @@ Die Service-Klassen enthalten die Logik.
 
 Sie sind absichtlich teilweise noch leer und enthalten TODO-Kommentare.
 
-Das ist normal.
-
 Der Zweck ist: Alle koennen sofort anfangen, weil die Methodennamen schon festgelegt sind.
 
 ---
@@ -245,6 +243,16 @@ Login
 Passwort aendern
 Profil bearbeiten
 Lieferadresse speichern
+```
+
+Zustaendige Frames:
+
+```text
+LoginFrame.java
+RegisterFrame.java
+ProfileFrame.java
+ChangePasswordFrame.java
+AddressFrame.java
 ```
 
 Wichtige Methoden:
@@ -272,6 +280,15 @@ Produktdetails
 Admin: Produkt hinzufuegen/bearbeiten/loeschen
 ```
 
+Zustaendige Frames:
+
+```text
+ProductListFrame.java
+ProductDetailFrame.java
+SearchFrame.java
+FilterFrame.java
+```
+
 Wichtige Methoden:
 
 ```java
@@ -297,6 +314,15 @@ Produkt in Warenkorb legen
 Produkt aus Warenkorb entfernen
 Gesamtpreis berechnen
 Warenkorb leeren
+```
+
+Zustaendige Frames:
+
+```text
+CartFrame.java
+CheckoutFrame.java
+OrderHistoryFrame.java
+OrderDetailFrame.java
 ```
 
 Wichtige Methoden:
@@ -358,6 +384,15 @@ DataManager dataManager = new DataManager();
 List<Product> products = dataManager.loadProducts();
 products.add(new Product(1, "Sport Shirt", "Leichtes Shirt", 29.99, "T-Shirt", ""));
 dataManager.saveProducts(products);
+```
+
+Zustaendige Frames:
+
+```text
+AdminFrame.java
+AdminProductFrame.java
+AdminOrderFrame.java
+AdminCustomerFrame.java
 ```
 
 ---
@@ -489,7 +524,7 @@ README
 .gitignore
 ```
 
-Nicht direkt in `main` arbeiten, wenn ihr neue Features entwickelt.
+Wichtig: Bitte nicht direkt in `main` arbeiten, wenn ihr etwas neues entwickelt.
 
 ---
 
@@ -537,7 +572,7 @@ git pull origin main
 
 5. Regelmaessig kleine Commits machen.
 
-Gute Commit Messages:
+Bsp fuer gute Commit Messages:
 
 ```text
 Add product search
@@ -582,6 +617,32 @@ passwordHash
 Person 1 sollte spaeter aus dem echten Passwort einen Hash erzeugen und nur den Hash speichern.
 
 Keine Klartext-Passwoerter in `.dat` Dateien speichern.
+
+---
+
+## Benutzeroberfläche (UI)
+
+Die Benutzeroberfläche wird mit Java Swing umgesetzt.
+
+Alle Fenster und GUI-Komponenten werden im Paket:
+
+src/ui
+
+abgelegt.
+
+Beispiele:
+- LoginFrame
+- RegisterFrame
+- ProductListFrame
+- CartFrame
+- AdminFrame
+
+JOptionPane darf für:
+- Fehlermeldungen
+- Erfolgsmeldungen
+- Bestätigungsdialoge
+
+verwendet werden.
 
 ---
 
