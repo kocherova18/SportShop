@@ -235,6 +235,8 @@ Der Zweck ist: Alle koennen sofort anfangen, weil die Methodennamen schon festge
 
 Fuer Person 1.
 
+Branch: login-profile
+
 Zustaendig fuer:
 
 ```text
@@ -269,6 +271,8 @@ updateProfile(User user, String name, Address address)
 ### ProductService.java
 
 Fuer Person 2 und teilweise Person 4.
+
+Branch: products
 
 Zustaendig fuer:
 
@@ -306,6 +310,8 @@ deleteProduct(int productId)
 ### CartService.java
 
 Fuer Person 3.
+
+Branch: cart-orders
 
 Zustaendig fuer:
 
@@ -364,6 +370,8 @@ updateOrderStatus(int orderId, String status)
 ## 6. DataManager.java
 
 Fuer Person 4 / Integration.
+
+Branch: admin-data
 
 Zustaendig fuer Serialisierung:
 
