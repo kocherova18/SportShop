@@ -233,7 +233,7 @@ Der Zweck ist: Alle koennen sofort anfangen, weil die Methodennamen schon festge
 
 ### UserService.java
 
-Fuer Person 1. (Zuzanna Joziak)
+Fuer Person 1.
 
 Branch: login-profile
 
@@ -270,7 +270,7 @@ updateProfile(User user, String name, Address address)
 
 ### ProductService.java
 
-Fuer Person 2 und teilweise Person 4. (Karyna Malinouskaya)
+Fuer Person 2 und teilweise Person 4. 
 
 Branch: products
 
@@ -309,7 +309,7 @@ deleteProduct(int productId)
 
 ### CartService.java
 
-Fuer Person 3. (Koray Aslan)
+Fuer Person 3.
 
 Branch: cart-orders
 
@@ -369,7 +369,7 @@ updateOrderStatus(int orderId, String status)
 
 ## 6. DataManager.java
 
-Fuer Person 4 / Integration. (Kateryna Kocherova)
+Fuer Person 4 / Integration. 
 
 Branch: admin-data
 
@@ -407,7 +407,7 @@ AdminCustomerFrame.java
 
 ## 7. Aufgabenaufteilung
 
-### Person 1: Login, Registrierung, Benutzerprofil
+### Person 1: Login, Registrierung, Benutzerprofil (Zuzanna Joziak)
 
 Arbeitet hauptsaechlich mit:
 
@@ -430,7 +430,7 @@ Zugriff nur auf eigene Daten
 
 ---
 
-### Person 2: Produkte, Suche, Filter
+### Person 2: Produkte, Suche, Filter (Karyna Malinouskaya)
 
 Arbeitet hauptsaechlich mit:
 
@@ -450,7 +450,7 @@ Produktdetails anzeigen
 
 ---
 
-### Person 3: Warenkorb und Bestellung
+### Person 3: Warenkorb und Bestellung (Koray Aslan)
 
 Arbeitet hauptsaechlich mit:
 
@@ -490,7 +490,7 @@ Product testProduct = new Product(
 
 ---
 
-### Person 4: Admin, Speicherung, Integration
+### Person 4: Admin, Speicherung, Integration (Kateryna Kocherova)
 
 Arbeitet hauptsaechlich mit:
 
