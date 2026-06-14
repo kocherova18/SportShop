@@ -233,7 +233,7 @@ Der Zweck ist: Alle koennen sofort anfangen, weil die Methodennamen schon festge
 
 ### UserService.java
 
-Fuer Person 1.
+Fuer Person 1. (Zuzanna Joziak)
 
 Branch: login-profile
 
@@ -270,7 +270,7 @@ updateProfile(User user, String name, Address address)
 
 ### ProductService.java
 
-Fuer Person 2 und teilweise Person 4.
+Fuer Person 2 und teilweise Person 4. (Karyna Malinouskaya)
 
 Branch: products
 
@@ -309,7 +309,7 @@ deleteProduct(int productId)
 
 ### CartService.java
 
-Fuer Person 3.
+Fuer Person 3. (Koray Aslan)
 
 Branch: cart-orders
 
@@ -369,7 +369,7 @@ updateOrderStatus(int orderId, String status)
 
 ## 6. DataManager.java
 
-Fuer Person 4 / Integration.
+Fuer Person 4 / Integration. (Kateryna Kocherova)
 
 Branch: admin-data
 
