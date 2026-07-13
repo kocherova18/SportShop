@@ -58,7 +58,7 @@ public class UserService {
 
         String checkedEmail = email.trim();
 
-        if(!checkedEmail.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]\\.[A-Za-z]{2,}$")){   //^bedeutet Anfang
+        if(!checkedEmail.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")){   //^bedeutet Anfang
             throw new IllegalArgumentException("Email hat ein ungültiges Format");
         }
     }
