@@ -58,7 +58,7 @@ public class UserService {
 
         String checkedEmail = email.trim();
 
-        if(!checkedEmail.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]\\.[A-Za-z]{2,}$")){ //^bedeutet Anfang
+        if(!checkedEmail.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]\\.[A-Za-z]{2,}$")){   //^bedeutet Anfang
             throw new IllegalArgumentException("Email hat ein ungültiges Format");
         }
     }
@@ -83,13 +83,13 @@ public class UserService {
     
     private String hashPassword(String password){
         try{
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hashedBytes = digest.digest(password.getBytes(StandardCharsets.UTF_8));
-
-            StringBuilder result = new StringBuilder();
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");    //SHA-256 macht aus dem Text Hash
+            byte[] hashedBytes = digest.digest(password.getBytes(StandardCharsets.UTF_8));      //SHA-256 arbeitet auf
+                                                                                                //Bytes, nicht Strings
+            StringBuilder result = new StringBuilder();     //Bytes werden als normales Text gespeichert
 
             for(byte b: hashedBytes){
-                result.append(String.format("%02x", b));
+                result.append(String.format("%02x", b));    //jedes Byte wrid in Hexadezimalsystem als Text gespeichert
             }
             return result.toString();
         } catch(NoSuchAlgorithmException e){
