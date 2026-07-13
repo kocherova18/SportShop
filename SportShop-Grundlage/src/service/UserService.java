@@ -3,6 +3,9 @@ package service;
 import data.DataManager;
 import model.User;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 public class UserService {
@@ -43,6 +46,35 @@ public class UserService {
         if(password == null || password.length()<8){
             throw new IllegalArgumentException("Passwort muss mindestens 8 Zeichen enthalten");
         }
+    }
+
+    private int generateUserId(){
+        int maxID = 0;
+
+        for(User user: users){
+            if(user.getId()>maxID) {
+                maxID = user.getId();
+            }
+        }
+
+        return maxID+1;
+    }
+    
+    private String hashPassword(String password){
+        try{
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hashedBytes = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+
+            StringBuilder result = new StringBuilder();
+
+            for(byte b: hashedBytes){
+                result.append(String.format("%02x", b));
+            }
+            return result.toString();
+        } catch(NoSuchAlgorithmException e){
+            throw new RuntimeException("Passwort konnte nicht gehasht werden,", e);
+        }
+
     }
 
 
