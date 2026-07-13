@@ -1,6 +1,7 @@
 import data.DataManager;
 import model.User;
 import service.UserService;
+import ui.RegisterFrame;
 
 import java.sql.SQLOutput;
 
@@ -10,7 +11,10 @@ public class Main {
         DataManager dataManager = new DataManager();
         UserService userService = new UserService(dataManager);
 
-        try{
+        RegisterFrame registerFrame = new RegisterFrame(userService);
+        registerFrame.setVisible(true);
+
+       /* try{
             User user = userService.register("example@example.com", "password123");
 
             System.out.println("Registrierung erfolgreich.");
@@ -18,5 +22,6 @@ public class Main {
         } catch (IllegalArgumentException e){
             System.out.println("Fehler: " + e.getMessage());
         }
+        */
     }
 }
