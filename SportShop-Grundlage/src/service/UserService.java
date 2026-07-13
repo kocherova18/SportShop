@@ -51,6 +51,21 @@ public class UserService {
         return false;
     }
 
+    private User findUserByEmail(String email){
+        if (email == null){
+            return null;
+        }
+
+        String checkedEmail = email.trim().toLowerCase();
+
+        for(User user : users){
+            if(user.getEmail() != null && user.getEmail().equalsIgnoreCase(checkedEmail)){
+                return user;
+            }
+        }
+        return null;
+    }
+
     private void validateEmail(String email){
         if(email == null || email.trim().isEmpty()){
             throw new IllegalArgumentException("Email darf nicht leer sein");
