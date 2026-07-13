@@ -17,6 +17,27 @@ public class UserService {
         this.users = dataManager.loadUsers();
     }
 
+    public User register(String email, String password){
+        validateEmail(email);
+        validatePassword(password);
+
+        String cleanEmail = email.trim().toLowerCase();
+
+        if(isAlreadyRegistered(cleanEmail)){
+            throw new IllegalArgumentException("Diese E-mail-Adresse ist bereits registriert.");
+        }
+
+        int newID = generateUserId();
+        String passwordHash = hashPassword(password);
+
+        User newUser = new User(newID, "Kunde", cleanEmail, passwordHash, null, User.ROLE_CUSTOMER);
+
+        users.add(newUser);
+        dataManager.saveUsers(users);
+
+        return newUser;
+    }
+
     private boolean isAlreadyRegistered(String email){
         if (email == null){     //falls jemand gibt kein Email ein und aktiviert die Methode,
             return false;       //dann wird er keine Fehlermeldung bekommen
