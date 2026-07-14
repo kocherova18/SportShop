@@ -50,12 +50,17 @@ public class LoginFrame extends JFrame {
         String password = passwordField.getText();
 
         try{
-            User logggedInUser = userService.login(email, password);
+            User loggedInUser = userService.login(email, password);
 
-            JOptionPane.showMessageDialog(this, "Login erfolgreich. Wilkommen, " + logggedInUser.getEmail());
+            JOptionPane.showMessageDialog(this, "Login erfolgreich. Wilkommen, " + loggedInUser.getEmail());
 
             emailField.setText("");
             passwordField.setText("");
+
+            ProfileFrame profileFrame = new ProfileFrame(loggedInUser);
+            profileFrame.setVisible(true);
+            dispose();
+
         }catch (IllegalArgumentException e){
             JOptionPane.showMessageDialog(this, e.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
         }
