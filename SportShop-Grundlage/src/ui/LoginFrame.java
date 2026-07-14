@@ -57,7 +57,7 @@ public class LoginFrame extends JFrame {
             emailField.setText("");
             passwordField.setText("");
 
-            ProfileFrame profileFrame = new ProfileFrame(loggedInUser);
+            ProfileFrame profileFrame = new ProfileFrame(userService, loggedInUser);
             profileFrame.setVisible(true);
             dispose();
 
