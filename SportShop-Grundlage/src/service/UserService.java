@@ -38,6 +38,30 @@ public class UserService {
         return newUser;
     }
 
+    public User login(String email, String password){
+        if(email==null || email.trim().isEmpty()){
+            throw new IllegalArgumentException("E-mail darf nicht leer sein.");
+        }
+
+        if(password==null || password.isEmpty()){
+            throw new IllegalArgumentException("Passwort darf nicht leer sein.");
+        }
+
+        User user = findUserByEmail(email);
+
+        if(user == null){
+            throw new IllegalArgumentException("E-mail oder passwort ist falsch.");
+        }
+
+        String passwordHash = hashPassword(password);
+
+        if(!passwordHash.equals(user.getPasswordHash())){
+            throw new IllegalArgumentException("E-mail oder Passwort ist falsch.");
+        }
+
+        return user;
+    }
+
     private boolean isAlreadyRegistered(String email){
         if (email == null){     //falls jemand gibt kein Email ein und aktiviert die Methode,
             return false;       //dann wird er keine Fehlermeldung bekommen
