@@ -62,6 +62,44 @@ public class UserService {
         return user;
     }
 
+    public void changePassword(User user, String oldPassword, String newPassword){
+        if (user == null){
+            throw new IllegalArgumentException("Sie müssen eingeloggt sein.");
+        }
+
+        if(oldPassword == null || oldPassword.isEmpty()){
+            throw new IllegalArgumentException("Altes passwort darf nicht leer sein.");
+        }
+
+        validatePassword(newPassword);
+
+        User savedUser = null;
+
+        for(User currentUser : users){
+            if(currentUser.getId() == user.getId()){
+                savedUser = currentUser;
+                break;
+            }
+        }
+
+        if(savedUser == null){
+            throw new IllegalArgumentException("Benutzer wurde nicht gefunden");
+        }
+
+        String oldPasswordHash = hashPassword(oldPassword);
+
+        if(!oldPasswordHash.equals(savedUser.getPasswordHash())){
+            throw new IllegalArgumentException("Altes passwort ist falsch.");
+        }
+
+        String newPasswordHash = hashPassword(newPassword);
+
+        savedUser.setPasswordHash(newPasswordHash);
+        user.setPasswordHash(newPasswordHash);
+
+        dataManager.saveUsers(users);
+    }
+
     private boolean isAlreadyRegistered(String email){
         if (email == null){     //falls jemand gibt kein Email ein und aktiviert die Methode,
             return false;       //dann wird er keine Fehlermeldung bekommen
