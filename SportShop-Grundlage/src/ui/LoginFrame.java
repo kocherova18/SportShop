@@ -30,6 +30,9 @@ public class LoginFrame extends JFrame {
         JLabel passwordLabel = new JLabel("Passwort:");
         passwordField = new JPasswordField();
 
+        JButton registerButton = new JButton("Registrieren");
+        registerButton.addActionListener(e -> openRegisterFrame());
+
         JButton loginButton = new JButton("Einloggen");
         loginButton.addActionListener(e -> loginUser());
 
@@ -39,7 +42,7 @@ public class LoginFrame extends JFrame {
         panel.add(passwordLabel);
         panel.add(passwordField);
 
-        panel.add(new JLabel(""));
+        panel.add(registerButton);
         panel.add(loginButton);
 
         add(panel);
@@ -64,5 +67,10 @@ public class LoginFrame extends JFrame {
         }catch (IllegalArgumentException e){
             JOptionPane.showMessageDialog(this, e.getMessage(), "Fehler", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    private void openRegisterFrame() {
+        RegisterFrame registerFrame = new RegisterFrame(userService);
+        registerFrame.setVisible(true);
     }
 }
