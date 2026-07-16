@@ -109,6 +109,8 @@ public class UserService {
             throw new IllegalArgumentException("Name darf nicht leer sein.");
         }
 
+        validateAddress(address);
+
         User savedUser = null;
 
         for (User currentUser : users) {
@@ -121,6 +123,9 @@ public class UserService {
         if (savedUser == null) {
             throw new IllegalArgumentException("Benutzer wurde nicht gefunden.");
         }
+
+        Address cleanAddress = new Address(address.getStreet().trim(), address.getHouseNumber().trim(),
+                address.getZipCode().trim(), address.getCity().trim(), address.getCountry().trim());
 
         savedUser.setName(name.trim());
         savedUser.setAddress(address);
@@ -174,6 +179,32 @@ public class UserService {
     private void validatePassword(String password){
         if(password == null || password.length()<8){
             throw new IllegalArgumentException("Passwort muss mindestens 8 Zeichen enthalten");
+        }
+    }
+
+    private void validateAddress(Address address) {
+        if (address == null) {
+            throw new IllegalArgumentException("Adresse muss vollständig ausgefüllt werden.");
+        }
+
+        if (address.getStreet() == null || address.getStreet().trim().isEmpty()) {
+            throw new IllegalArgumentException("Strasse darf nicht leer sein.");
+        }
+
+        if (address.getHouseNumber() == null || address.getHouseNumber().trim().isEmpty()) {
+            throw new IllegalArgumentException("Hausnummer darf nicht leer sein.");
+        }
+
+        if (address.getZipCode() == null || address.getZipCode().trim().isEmpty()) {
+            throw new IllegalArgumentException("PLZ darf nicht leer sein.");
+        }
+
+        if (address.getCity() == null || address.getCity().trim().isEmpty()) {
+            throw new IllegalArgumentException("Stadt darf nicht leer sein.");
+        }
+
+        if (address.getCountry() == null || address.getCountry().trim().isEmpty()) {
+            throw new IllegalArgumentException("Land darf nicht leer sein.");
         }
     }
 

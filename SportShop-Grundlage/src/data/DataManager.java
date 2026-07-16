@@ -14,7 +14,18 @@ public class DataManager {
     private static final String PRODUCTS_FILE = "data/products.dat";
     private static final String ORDERS_FILE = "data/orders.dat";
 
+    private void createDataFolderIfNeeded(String filePath) {
+        File file = new File(filePath);
+        File folder = file.getParentFile();
+
+        if (folder != null && !folder.exists()) {
+            folder.mkdirs();
+        }
+    }
+
     public void saveUsers(List<User> users) {
+        createDataFolderIfNeeded(USERS_FILE);
+
         try {
             FileOutputStream fs = new FileOutputStream(USERS_FILE);
             ObjectOutputStream out = new ObjectOutputStream(fs);
@@ -28,6 +39,12 @@ public class DataManager {
     }
 
     public List<User> loadUsers() {
+        File file = new File(USERS_FILE);
+
+        if (!file.exists()) {
+            return new ArrayList<User>();
+        }
+
         try {
             FileInputStream fs = new FileInputStream(USERS_FILE);
             ObjectInputStream in = new ObjectInputStream(fs);
