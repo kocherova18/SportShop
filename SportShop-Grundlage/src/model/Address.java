@@ -61,6 +61,9 @@ public class Address implements Serializable {
 
     @Override
     public String toString() {
+        if(street.trim().isEmpty()){
+            return "Keine Adresse gespeichert";
+        }
         return street + " " + houseNumber + ", " + zipCode + " " + city + ", " + country;
     }
 }

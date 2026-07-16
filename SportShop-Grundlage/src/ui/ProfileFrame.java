@@ -13,6 +13,7 @@ public class ProfileFrame extends JFrame {
     private JLabel nameLabel;
     private JLabel emailLabel;
     private JLabel roleLabel;
+    private JLabel addressLabel;
 
     public ProfileFrame(User user) {
         this(null, user);
@@ -23,24 +24,28 @@ public class ProfileFrame extends JFrame {
         this.user = user;
 
         setTitle("Mein Konto");
-        setSize(400, 300);
+        setSize(650, 550);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(7, 1, 10, 10));
+        panel.setLayout(new GridLayout(9, 1, 10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         JLabel titleLabel = new JLabel("Mein Konto");
         nameLabel = new JLabel("Name: " + user.getName());
         emailLabel = new JLabel("E-Mail: " + user.getEmail());
         roleLabel = new JLabel("Rolle: " + user.getRole());
+        addressLabel = new JLabel("Adresse: " + getAddressText());
 
         JButton editProfileButton = new JButton("Profil bearbeiten");
         editProfileButton.addActionListener(e -> openEditProfileFrame());
 
         JButton changePasswordButton = new JButton("Passwort ändern");
         changePasswordButton.addActionListener(e -> openChangePasswordFrame());
+
+        JButton logoutButton = new JButton("Ausloggen");
+        logoutButton.addActionListener(e -> logout());
 
         JButton closeButton = new JButton("Schließen");
         closeButton.addActionListener(e -> dispose());
@@ -49,12 +54,22 @@ public class ProfileFrame extends JFrame {
         panel.add(nameLabel);
         panel.add(emailLabel);
         panel.add(roleLabel);
+        panel.add(addressLabel);
         panel.add(editProfileButton);
         panel.add(changePasswordButton);
+        panel.add(logoutButton);
         panel.add(closeButton);
 
         add(panel);
     }
+    private String getAddressText() {
+        if (user.getAddress() == null) {
+            return "Keine Adresse gespeichert";
+        }
+
+        return user.getAddress().toString();
+    }
+
     private void openChangePasswordFrame() {
         if (userService == null) {
             JOptionPane.showMessageDialog(
@@ -97,6 +112,13 @@ public class ProfileFrame extends JFrame {
         nameLabel.setText("Name: " + user.getName());
         emailLabel.setText("E-Mail: " + user.getEmail());
         roleLabel.setText("Rolle: " + user.getRole());
+        addressLabel.setText("Adresse: " + getAddressText());
+    }
+
+    private void logout() {
+        LoginFrame loginFrame = new LoginFrame(userService);
+        loginFrame.setVisible(true);
+        dispose();
     }
 
 }
