@@ -100,7 +100,7 @@ public class UserService {
         dataManager.saveUsers(users);
     }
 
-    public void changeProfile(User user, String name, Address address){
+    public void updateProfile(User user, String name, Address address){
         if (user == null) {
             throw new IllegalArgumentException("Sie müssen eingeloggt sein.");
         }
