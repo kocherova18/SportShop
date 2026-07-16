@@ -2,7 +2,7 @@ package service;
 
 import data.DataManager;
 import model.User;
-
+import model.Address;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -96,6 +96,37 @@ public class UserService {
 
         savedUser.setPasswordHash(newPasswordHash);
         user.setPasswordHash(newPasswordHash);
+
+        dataManager.saveUsers(users);
+    }
+
+    public void updateProfile(User user, String name, Address address){
+        if (user == null) {
+            throw new IllegalArgumentException("Sie müssen eingeloggt sein.");
+        }
+
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Name darf nicht leer sein.");
+        }
+
+        User savedUser = null;
+
+        for (User currentUser : users) {
+            if (currentUser.getId() == user.getId()) {
+                savedUser = currentUser;
+                break;
+            }
+        }
+
+        if (savedUser == null) {
+            throw new IllegalArgumentException("Benutzer wurde nicht gefunden.");
+        }
+
+        savedUser.setName(name.trim());
+        savedUser.setAddress(address);
+
+        user.setName(name.trim());
+        user.setAddress(address);
 
         dataManager.saveUsers(users);
     }

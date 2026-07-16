@@ -54,11 +54,13 @@ public class RegisterFrame extends JFrame {
 
             JOptionPane.showMessageDialog(
                     this,
-                    "Registrierung erfolgreich."
+                    "Registrierung erfolgreich. Sie können sich jetzt einloggen."
             );
 
             emailField.setText("");
             passwordField.setText("");
+
+            dispose();
 
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(
