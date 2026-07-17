@@ -128,10 +128,10 @@ public class UserService {
                 address.getZipCode().trim(), address.getCity().trim(), address.getCountry().trim());
 
         savedUser.setName(name.trim());
-        savedUser.setAddress(address);
+        savedUser.setAddress(cleanAddress);
 
         user.setName(name.trim());
-        user.setAddress(address);
+        user.setAddress(cleanAddress);
 
         dataManager.saveUsers(users);
     }

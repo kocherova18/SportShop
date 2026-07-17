@@ -39,6 +39,10 @@ public class OrderService {
             return null;
         }
 
+        if (currentUser.getAddress() == null) {
+            return null;
+        }
+
         // Ein leerer oder fehlender Warenkorb kann nicht bestellt werden.
         if (cartItems == null || cartItems.isEmpty()) {
             return null;
