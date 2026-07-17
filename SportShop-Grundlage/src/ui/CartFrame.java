@@ -362,6 +362,13 @@ public class CartFrame extends JFrame {
             showError("Der Warenkorb ist leer.");
             return;
         }
+        if (currentUser.getAddress() == null) {
+            showError(
+                    "Bitte zuerst unter \"Mein Konto\" "
+                            + "eine Lieferadresse speichern."
+            );
+            return;
+        }
 
         int answer =
                 JOptionPane.showConfirmDialog(
