@@ -28,6 +28,7 @@ import model.User;
 import service.CartService;
 import service.InvoiceService;
 import service.OrderService;
+import service.UserService;
 
 
 public class StartFrame extends JFrame {
@@ -45,6 +46,8 @@ public class StartFrame extends JFrame {
 
     private static final boolean SHOW_CART_BUTTON = true;
 
+    private final UserService userService;
+
     private final CartService cartService;
     private final OrderService orderService;
     private final InvoiceService invoiceService;
@@ -53,12 +56,14 @@ public class StartFrame extends JFrame {
     private CartFrame cartFrame;
 
     public StartFrame(
+            UserService userService,
             CartService cartService,
             OrderService orderService,
             InvoiceService invoiceService,
             User currentUser) {
 
-        if (cartService == null
+        if (userService == null
+                ||cartService == null
                 || orderService == null
                 || invoiceService == null
                 || currentUser == null) {
@@ -69,6 +74,7 @@ public class StartFrame extends JFrame {
             );
         }
 
+        this.userService = userService;
         this.cartService = cartService;
         this.orderService = orderService;
         this.invoiceService = invoiceService;
@@ -543,36 +549,66 @@ private ImageIcon loadCartIcon() {
 
         accountPanel.setOpaque(false);
 
-        JButton loginButton =
+        JButton profileButton =
                 createButton(
-                        "Anmelden",
+                        "Mein Konto",
                         145,
                         42
                 );
 
-        loginButton.addActionListener(event ->
-                showPlaceholderMessage(
-                        "Das LoginFrame wird später geöffnet."
-                )
-        );
+        profileButton.addActionListener(event -> openProfileFrame());
 
-        JButton registerButton =
+        JButton logoutButton =
                 createButton(
-                        "Registrieren",
+                        "Ausloggen",
                         145,
                         42
                 );
 
-        registerButton.addActionListener(event ->
-                showPlaceholderMessage(
-                        "Das RegisterFrame wird später geöffnet."
-                )
-        );
+        logoutButton.addActionListener(event -> logout());
 
-        accountPanel.add(loginButton);
-        accountPanel.add(registerButton);
+        accountPanel.add(profileButton);
+        accountPanel.add(logoutButton);
 
         return accountPanel;
+    }
+
+    private void openProfileFrame() {
+        ProfileFrame profileFrame =
+                new ProfileFrame(
+                        userService,
+                        currentUser
+                );
+
+        profileFrame.setLocationRelativeTo(this);
+        profileFrame.setVisible(true);
+    }
+
+    private void logout() {
+        int answer =
+                JOptionPane.showConfirmDialog(
+                        this,
+                        "Möchten Sie sich wirklich ausloggen?",
+                        "Ausloggen",
+                        JOptionPane.YES_NO_OPTION
+                );
+
+        if (answer != JOptionPane.YES_OPTION) {
+            return;
+        }
+
+        if (cartFrame != null) {
+            cartFrame.dispose();
+        }
+
+        cartService.clearCart();
+
+        LoginFrame loginFrame =
+                new LoginFrame(userService);
+
+        loginFrame.setVisible(true);
+
+        dispose();
     }
 
     /*

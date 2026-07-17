@@ -2,6 +2,10 @@ package ui;
 
 import model.User;
 import service.UserService;
+import data.DataManager;
+import service.CartService;
+import service.OrderService;
+import service.InvoiceService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -60,8 +64,21 @@ public class LoginFrame extends JFrame {
             emailField.setText("");
             passwordField.setText("");
 
-            ProfileFrame profileFrame = new ProfileFrame(userService, loggedInUser);
-            profileFrame.setVisible(true);
+            DataManager dataManager = new DataManager();
+
+            CartService cartService = new CartService();
+            OrderService orderService = new OrderService(dataManager);
+            InvoiceService invoiceService = new InvoiceService();
+
+            StartFrame startFrame = new StartFrame(
+                    userService,
+                    cartService,
+                    orderService,
+                    invoiceService,
+                    loggedInUser
+            );
+
+            startFrame.setVisible(true);
             dispose();
 
         }catch (IllegalArgumentException e){
