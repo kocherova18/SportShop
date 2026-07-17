@@ -1,11 +1,14 @@
 import model.CartItem;
 import model.Product;
 import service.CartService;
+import data.DataManager;
 
 public class CartServiceTest {
 
     public static void main(String[] args) {
-        CartService cartService = new CartService();
+        DataManager dataManager = new DataManager();
+
+        CartService cartService = new CartService(dataManager, 1);
 
         Product shoes = new Product(
                 1,

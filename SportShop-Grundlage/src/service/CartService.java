@@ -4,14 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 import model.CartItem;
 import model.Product;
+import data.DataManager;
+import model.User;
 
 public class CartService {
 
     // Hier werden alle Produkte aus dem Warenkorb gespeichert.
     private List<CartItem> cartItems;
+    private DataManager dataManager;
+    private int userId;
 
-    public CartService() {
-        cartItems = new ArrayList<>();
+    public CartService(DataManager dataManager, int userId) {
+        this.dataManager = dataManager;
+        this.userId = userId;
+
+        cartItems = dataManager.loadCart(userId);
     }
 
     public boolean addToCart(Product product, int quantity) {
@@ -32,6 +39,8 @@ public class CartService {
             cartItems.add(newItem);
         }
 
+        saveCart();
+
         return true;
     }
 
@@ -43,6 +52,9 @@ public class CartService {
         }
 
         cartItems.remove(item);
+
+        saveCart();
+
         return true;
     }
 
@@ -59,6 +71,9 @@ public class CartService {
         }
 
         item.setQuantity(newQuantity);
+
+        saveCart();
+
         return true;
     }
 
@@ -83,6 +98,12 @@ public class CartService {
 
     public void clearCart() {
         cartItems.clear();
+
+        saveCart();
+    }
+
+    private void saveCart() {
+        dataManager.saveCart(userId, cartItems);
     }
 
     private CartItem findCartItemByProductId(int productId) {

@@ -25,6 +25,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import model.User;
+import model.Product;
 import service.CartService;
 import service.InvoiceService;
 import service.OrderService;
@@ -502,12 +503,20 @@ private ImageIcon loadCartIcon() {
                 46
         );
 
+
+            shopButton.addActionListener(event ->       //muss später weggeschmisen werden
+                    addTestProduct()                            //und dan untere teli unkommentieren
+            );                                                  //diese Teil nur für Testzwecke
+        /*
         shopButton.addActionListener(event ->
                 showPlaceholderMessage(
+
                         "Das Home- oder Produktfenster "
                                 + "wird später geöffnet."
                 )
         );
+        */
+
 
         /*
         * Panel mit Anmelden und Registrieren.
@@ -600,8 +609,6 @@ private ImageIcon loadCartIcon() {
         if (cartFrame != null) {
             cartFrame.dispose();
         }
-
-        cartService.clearCart();
 
         LoginFrame loginFrame =
                 new LoginFrame(userService);
@@ -827,6 +834,34 @@ private ImageIcon loadCartIcon() {
         );
 
         return null;
+    }
+
+    private void addTestProduct() {             //NUR FÜR TESTZWECKE, muss spätergelöscht werden
+        Product testProduct = new Product(
+                1,
+                "Testschuhe",
+                "Produkt nur zum Testen",
+                49.99,
+                "Schuhe",
+                ""
+        );
+
+        boolean added = cartService.addToCart(
+                testProduct,
+                1
+        );
+
+        if (added) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Testprodukt wurde zum Warenkorb hinzugefügt."
+            );
+
+            if (cartFrame != null
+                    && cartFrame.isDisplayable()) {
+                cartFrame.refreshCartView();
+            }
+        }
     }
 
     /*
