@@ -10,6 +10,7 @@ import service.CartService;
 import service.InvoiceService;
 import service.OrderService;
 import ui.CartFrame;
+import service.UserService;
 
 public class CartFrameTest {
 
@@ -19,7 +20,7 @@ public class CartFrameTest {
                     new TestDataManager();
 
             CartService cartService =
-                    new CartService();
+                    new CartService(dataManager, 1);
 
             OrderService orderService =
                     new OrderService(dataManager);

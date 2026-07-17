@@ -11,12 +11,13 @@ public class OrderServiceTest {
 
     public static void main(String[] args) {
         TestDataManager dataManager = new TestDataManager();
+        DataManager dataManager1 = new DataManager();
 
         OrderService orderService =
                 new OrderService(dataManager);
 
         CartService cartService =
-                new CartService();
+                new CartService(dataManager1, 1);
 
         User customer1 = new User(
                 1,

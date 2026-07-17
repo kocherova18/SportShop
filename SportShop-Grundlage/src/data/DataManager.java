@@ -3,6 +3,7 @@ package data;
 import model.User;
 import model.Product;
 import model.Order;
+import model.CartItem;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -94,6 +95,7 @@ public class DataManager {
     }
 
     public void saveOrders(List<Order> orders) {
+        createDataFolderIfNeeded(ORDERS_FILE);
         try {
             FileOutputStream fs = new FileOutputStream(ORDERS_FILE);
             ObjectOutputStream out = new ObjectOutputStream(fs);
@@ -107,6 +109,12 @@ public class DataManager {
     }
 
     public List<Order> loadOrders() {
+        File file = new File(ORDERS_FILE);
+
+        if (!file.exists()) {
+            return new ArrayList<Order>();
+        }
+
         try {
             FileInputStream fs = new FileInputStream(ORDERS_FILE);
             ObjectInputStream in = new ObjectInputStream(fs);
@@ -122,5 +130,65 @@ public class DataManager {
         }
 
         return new ArrayList<Order>();
+    }
+
+    public void saveCart(
+            int userId,
+            List<CartItem> cartItems) {
+
+        String cartFile =
+                "data/cart_" + userId + ".dat";
+
+        createDataFolderIfNeeded(cartFile);
+
+        try {
+            FileOutputStream fs =
+                    new FileOutputStream(cartFile);
+
+            ObjectOutputStream out =
+                    new ObjectOutputStream(fs);
+
+            out.writeObject(cartItems);
+
+            out.close();
+
+        } catch (IOException e) {
+            System.err.println(e.toString());
+        }
+    }
+
+    public List<CartItem> loadCart(int userId) {
+
+        String cartFile =
+                "data/cart_" + userId + ".dat";
+
+        File file = new File(cartFile);
+
+        if (!file.exists()) {
+            return new ArrayList<CartItem>();
+        }
+
+        try {
+            FileInputStream fs =
+                    new FileInputStream(cartFile);
+
+            ObjectInputStream in =
+                    new ObjectInputStream(fs);
+
+            List<CartItem> cartItems =
+                    (List<CartItem>) in.readObject();
+
+            in.close();
+
+            return cartItems;
+
+        } catch (IOException e) {
+            System.err.println(e.toString());
+
+        } catch (ClassNotFoundException e) {
+            System.err.println(e.toString());
+        }
+
+        return new ArrayList<CartItem>();
     }
 }

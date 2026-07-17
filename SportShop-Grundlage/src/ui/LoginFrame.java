@@ -66,7 +66,7 @@ public class LoginFrame extends JFrame {
 
             DataManager dataManager = new DataManager();
 
-            CartService cartService = new CartService();
+            CartService cartService = new CartService(dataManager, loggedInUser.getId());
             OrderService orderService = new OrderService(dataManager);
             InvoiceService invoiceService = new InvoiceService();
 
