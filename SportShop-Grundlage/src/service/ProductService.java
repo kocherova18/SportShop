@@ -26,14 +26,29 @@ public class ProductService {
     }
 
     public List<Product> searchProducts(String searchText) {
-        // TODO Person 2: Suche nach Produktname implementieren
-        return new ArrayList<>();
+    	List<Product> result = new ArrayList<>();
+        for (Product product : products) {
+            if (product.getName().toLowerCase()
+                    .contains(searchText.toLowerCase())) {
+                result.add(product);
+            }
+        }
+        return result;
     }
 
     public List<Product> filterProducts(String category, double maxPrice) {
-        // TODO Person 2: Filter nach Kategorie und Preis implementieren
-        return new ArrayList<>();
-    }
+            List<Product> result = new ArrayList<>();
+            for (Product product : products) {
+                boolean categoryMatch = category == null 
+                        || category.isEmpty() 
+                        || product.getCategory().equalsIgnoreCase(category);
+                boolean priceMatch = product.getPrice() <= maxPrice;
+                if (categoryMatch && priceMatch) {
+                    result.add(product);
+                }
+            }
+            return result;
+        }
 
     public boolean addProduct(Product product) {
         // TODO Person 4/Admin: Produkt pruefen und hinzufuegen
