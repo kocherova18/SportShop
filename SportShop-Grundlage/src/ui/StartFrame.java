@@ -2,20 +2,16 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import java.io.File;
 import java.net.URL;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -25,7 +21,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import model.User;
-import model.Product;
 import service.CartService;
 import service.InvoiceService;
 import service.OrderService;
@@ -35,26 +30,23 @@ import service.UserService;
 public class StartFrame extends JFrame {
 
     private static final String BACKGROUND_IMAGE_PATH =
-            "/ui/images/nike-wm.jpg";
+            "/ui/images/nike-wm.png";
 
     private static final String CART_ICON_PATH =
-            "/ui/images/cart-symbol.jpg";
+            "/ui/images/cart-symbol.png";
 
     private static final int TOP_PANEL_HEIGHT = 70;
-
-    // Höhe des unteren weißen Bereichs
-    private static final int BOTTOM_PANEL_HEIGHT = 120;
 
     private static final boolean SHOW_CART_BUTTON = true;
 
     private final UserService userService;
-
     private final CartService cartService;
     private final OrderService orderService;
     private final InvoiceService invoiceService;
     private final User currentUser;
 
     private CartFrame cartFrame;
+
 
     public StartFrame(
             UserService userService,
@@ -64,7 +56,7 @@ public class StartFrame extends JFrame {
             User currentUser) {
 
         if (userService == null
-                ||cartService == null
+                || cartService == null
                 || orderService == null
                 || invoiceService == null
                 || currentUser == null) {
@@ -97,13 +89,6 @@ public class StartFrame extends JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
 
-        /*
-         * Das Hauptpanel besteht aus:
-         *
-         * NORTH  = oberer weißer Bereich
-         * CENTER = Hintergrundbild mit Buttons
-         * SOUTH  = unterer weißer Bereich
-         */
         JPanel mainPanel =
                 new JPanel(new BorderLayout());
 
@@ -117,23 +102,19 @@ public class StartFrame extends JFrame {
                 BorderLayout.CENTER
         );
 
-        mainPanel.add(
-                createBottomPanel(),
-                BorderLayout.SOUTH
-        );
-
         setContentPane(mainPanel);
     }
 
+
     /*
-     * Erstellt den oberen weißen Bereich.
+     * Erstellt den oberen Bereich.
      */
     private JPanel createTopPanel() {
 
         JPanel topPanel =
                 new JPanel(new BorderLayout());
 
-        topPanel.setBackground(Color.WHITE);
+        topPanel.setBackground(Color.BLACK);
 
         topPanel.setPreferredSize(
                 new Dimension(
@@ -152,20 +133,11 @@ public class StartFrame extends JFrame {
         );
 
         /*
-         * Dieses leere Panel ist für spätere Elemente gedacht.
-         *
-         * Hier könnten später zum Beispiel stehen:
-         * Startseite, Produkte, Profil oder Suche.
-         */
-
-
-        /*
-         * Der Warenkorb ist getrennt aufgebaut.
-         * Er kann deshalb später einfach entfernt werden.
+         * Der Warenkorb wird oben rechts eingefügt.
          */
         if (SHOW_CART_BUTTON) {
-            topPanel.add(
 
+            topPanel.add(
                     createCartArea(),
                     BorderLayout.EAST
             );
@@ -174,196 +146,200 @@ public class StartFrame extends JFrame {
         return topPanel;
     }
 
-    /*
-     * Erstellt nur den Bereich für den Warenkorb.
-     */
-/*
- * Erstellt den getrennten Warenkorbbereich
- * oben rechts.
- */
-/*
- * Erstellt den Warenkorbbereich oben rechts.
- */
-/*
- * Erstellt den Warenkorb oben rechts.
- */
-private JPanel createCartArea() {
-
-    JPanel cartPanel =
-            new JPanel(
-                    new FlowLayout(
-                            FlowLayout.RIGHT,
-                            0,
-                            0
-                    )
-            );
-
-    cartPanel.setBackground(Color.WHITE);
-
-    JButton cartButton =
-            new JButton("Warenkorb");
-
-    ImageIcon cartIcon =
-            loadCartIcon();
-
-    if (cartIcon != null) {
-        cartButton.setIcon(cartIcon);
-    }
-
-    // Text links, Bild rechts
-    cartButton.setHorizontalTextPosition(
-            SwingConstants.LEFT
-    );
-
-    cartButton.setVerticalTextPosition(
-            SwingConstants.CENTER
-    );
-
-    cartButton.setIconTextGap(8);
-
-    cartButton.setPreferredSize(
-            new Dimension(180, 55)
-    );
-
-    cartButton.setFont(
-            new Font(
-                    "SansSerif",
-                    Font.BOLD,
-                    15
-            )
-    );
-
-    cartButton.setForeground(Color.BLACK);
-    cartButton.setBorderPainted(false);
-    cartButton.setFocusPainted(false);
-    cartButton.setContentAreaFilled(false);
-
-    cartButton.setCursor(
-            new Cursor(Cursor.HAND_CURSOR)
-    );
-
-    cartButton.setToolTipText(
-            "Warenkorb öffnen"
-    );
-
-    cartButton.addActionListener(event ->
-            openCartFrame()
-    );
-
-    cartPanel.add(cartButton);
-
-    return cartPanel;
-}
-
-/*
- * Öffnet den vorhandenen CartFrame.
- */
-private void openCartFrame() {
 
     /*
-     * Wenn noch kein Warenkorbfenster existiert
-     * oder das alte Fenster geschlossen wurde,
-     * wird ein neues erstellt.
+     * Erstellt den Warenkorbbereich oben rechts.
      */
-    if (cartFrame == null
-            || !cartFrame.isDisplayable()) {
+    private JPanel createCartArea() {
 
-        cartFrame =
-                new CartFrame(
-                        cartService,
-                        orderService,
-                        invoiceService,
-                        currentUser
+        JPanel cartPanel =
+                new JPanel(
+                        new FlowLayout(
+                                FlowLayout.RIGHT,
+                                0,
+                                0
+                        )
                 );
 
-        cartFrame.setLocationRelativeTo(this);
-    }
+        cartPanel.setBackground(
+                Color.decode("#2C044F")
+        );
 
-    /*
-     * Die Tabelle wird vor dem Anzeigen
-     * erneut aus dem CartService aufgebaut.
-     */
-    cartFrame.refreshCartView();
+        JButton cartButton =
+                new JButton("Warenkorb");
 
-    cartFrame.setVisible(true);
-    cartFrame.toFront();
-    cartFrame.requestFocus();
-}
+        ImageIcon cartIcon =
+                loadCartIcon();
 
-
-/*
- * Lädt das Warenkorb-Bild
- * und verkleinert es auf 42 x 42 Pixel.
- */
-private ImageIcon loadCartIcon() {
-
-    ImageIcon originalIcon = null;
-
-    /*
-     * Zuerst sucht Java das Bild
-     * über den Ressourcenpfad.
-     */
-    URL iconUrl =
-            StartFrame.class.getResource(
-                    CART_ICON_PATH
-            );
-
-    if (iconUrl != null) {
-        originalIcon =
-                new ImageIcon(iconUrl);
-    }
-
-    /*
-     * Falls das Laden über den Ressourcenpfad
-     * nicht funktioniert, werden normale
-     * Dateipfade geprüft.
-     */
-    if (originalIcon == null) {
-
-        String[] possiblePaths = {
-                "src/ui/images/cart-symbol.jpg",
-                "SportShop-Grundlage/src/ui/images/cart-symbol.jpg"
-        };
-
-        for (String path : possiblePaths) {
-
-            File iconFile =
-                    new File(path);
-
-            if (iconFile.exists()) {
-                originalIcon =
-                        new ImageIcon(path);
-
-                break;
-            }
+        if (cartIcon != null) {
+            cartButton.setIcon(cartIcon);
         }
+
+        /*
+         * Der Text steht links
+         * und das Bild rechts.
+         */
+        cartButton.setHorizontalTextPosition(
+                SwingConstants.LEFT
+        );
+
+        cartButton.setVerticalTextPosition(
+                SwingConstants.CENTER
+        );
+
+        cartButton.setIconTextGap(8);
+
+        cartButton.setPreferredSize(
+                new Dimension(
+                        180,
+                        55
+                )
+        );
+
+        cartButton.setFont(
+                new Font(
+                        "SansSerif",
+                        Font.BOLD,
+                        15
+                )
+        );
+
+        cartButton.setForeground(Color.WHITE);
+
+        /*
+         * Der Button bleibt durchsichtig.
+         * Dadurch sieht man den lila Hintergrund.
+         */
+        cartButton.setBorderPainted(false);
+        cartButton.setFocusPainted(false);
+        cartButton.setContentAreaFilled(false);
+        cartButton.setOpaque(false);
+
+        cartButton.setCursor(
+                new Cursor(
+                        Cursor.HAND_CURSOR
+                )
+        );
+
+        cartButton.setToolTipText(
+                "Warenkorb öffnen"
+        );
+
+        cartButton.addActionListener(
+                event -> openCartFrame()
+        );
+
+        cartPanel.add(cartButton);
+
+        return cartPanel;
     }
 
-    /*
-     * Wenn das Bild nicht gefunden wurde,
-     * wird null zurückgegeben.
-     */
-    if (originalIcon == null) {
-        return null;
-    }
 
     /*
-     * Das sehr große Originalbild
-     * wird auf 42 x 42 Pixel verkleinert.
+     * Öffnet den Warenkorb.
      */
-    Image scaledImage =
-            originalIcon
-                    .getImage()
-                    .getScaledInstance(
-                            42,
-                            42,
-                            Image.SCALE_SMOOTH
+    private void openCartFrame() {
+
+        /*
+         * Ein neues Warenkorbfenster wird nur erstellt,
+         * wenn noch keines geöffnet ist.
+         */
+        if (cartFrame == null
+                || !cartFrame.isDisplayable()) {
+
+            cartFrame =
+                    new CartFrame(
+                            cartService,
+                            orderService,
+                            invoiceService,
+                            currentUser
                     );
 
-    return new ImageIcon(
-            scaledImage
-    );
-}
+            cartFrame.setLocationRelativeTo(this);
+        }
+
+        /*
+         * Der Inhalt wird vor dem Anzeigen aktualisiert.
+         */
+        cartFrame.refreshCartView();
+
+        cartFrame.setVisible(true);
+        cartFrame.toFront();
+        cartFrame.requestFocus();
+    }
+
+
+    /*
+     * Lädt das Warenkorb-Bild
+     * und verkleinert es auf 42 x 42 Pixel.
+     */
+    private ImageIcon loadCartIcon() {
+
+        ImageIcon originalIcon = null;
+
+        /*
+         * Zuerst sucht Java das Bild
+         * über den Ressourcenpfad.
+         */
+        URL iconUrl =
+                StartFrame.class.getResource(
+                        CART_ICON_PATH
+                );
+
+        if (iconUrl != null) {
+
+            originalIcon =
+                    new ImageIcon(iconUrl);
+        }
+
+        /*
+         * Falls der Ressourcenpfad nicht funktioniert,
+         * werden normale Dateipfade geprüft.
+         */
+        if (originalIcon == null) {
+
+            String[] possiblePaths = {
+                    "src/ui/images/cart-symbol.png",
+                    "SportShop-Grundlage/src/ui/images/cart-symbol.png"
+            };
+
+            for (String path : possiblePaths) {
+
+                File iconFile =
+                        new File(path);
+
+                if (iconFile.exists()) {
+
+                    originalIcon =
+                            new ImageIcon(path);
+
+                    break;
+                }
+            }
+        }
+
+        /*
+         * Ohne gefundenes Bild wird kein Icon angezeigt.
+         */
+        if (originalIcon == null) {
+            return null;
+        }
+
+        /*
+         * Das große Bild wird auf die passende
+         * Größe für den Button verkleinert.
+         */
+        Image scaledImage =
+                originalIcon
+                        .getImage()
+                        .getScaledInstance(
+                                42,
+                                42,
+                                Image.SCALE_SMOOTH
+                        );
+
+        return new ImageIcon(scaledImage);
+    }
 
 
     /*
@@ -383,10 +359,6 @@ private ImageIcon loadCartIcon() {
                 new BorderLayout()
         );
 
-        /*
-         * Die drei Buttons werden innerhalb
-         * des Bildbereichs eingefügt.
-         */
         imagePanel.add(
                 createButtonContentPanel(),
                 BorderLayout.CENTER
@@ -395,34 +367,32 @@ private ImageIcon loadCartIcon() {
         return imagePanel;
     }
 
-    /*
-     * Erstellt den Text und die Button-Pyramide.
-     */
-/*
- * Erstellt Text und Buttons im Bildbereich.
- *
- * Durch setBounds können die Komponenten
- * unabhängig voneinander positioniert werden.
- */
-        private JPanel createButtonContentPanel() {
 
-        JPanel contentPanel = new JPanel();
+    /*
+     * Erstellt die Texte und Buttons
+     * innerhalb des Bildbereichs.
+     */
+    private JPanel createButtonContentPanel() {
+
+        JPanel contentPanel =
+                new JPanel();
 
         /*
-        * null bedeutet:
-        * Wir bestimmen die Positionen selbst mit setBounds.
-        */
+         * Mit null können die Komponenten
+         * einzeln über setBounds positioniert werden.
+         */
         contentPanel.setLayout(null);
 
         /*
-        * Das Panel bleibt durchsichtig,
-        * damit das Hintergrundbild sichtbar ist.
-        */
+         * Das Panel bleibt durchsichtig,
+         * damit das Hintergrundbild sichtbar ist.
+         */
         contentPanel.setOpaque(false);
 
+
         /*
-        * Große Überschrift.
-        */
+         * Große Überschrift.
+         */
         JLabel welcomeLabel =
                 new JLabel(
                         "WILLKOMMEN IM SPORTSHOP",
@@ -439,14 +409,6 @@ private ImageIcon loadCartIcon() {
                 )
         );
 
-        /*
-        * Position der großen Überschrift:
-        *
-        * x = 300
-        * y = 70
-        * Breite = 600
-        * Höhe = 45
-        */
         welcomeLabel.setBounds(
                 300,
                 10,
@@ -454,9 +416,10 @@ private ImageIcon loadCartIcon() {
                 45
         );
 
+
         /*
-        * Kleiner Text unter der Überschrift.
-        */
+         * Kleiner Text unter der Überschrift.
+         */
         JLabel textLabel =
                 new JLabel(
                         "Entdecke Sportmode nach deinem Geschmack",
@@ -473,9 +436,6 @@ private ImageIcon loadCartIcon() {
                 )
         );
 
-        /*
-        * Position des kleinen Textes.
-        */
         textLabel.setBounds(
                 250,
                 50,
@@ -483,9 +443,10 @@ private ImageIcon loadCartIcon() {
                 30
         );
 
+
         /*
-        * Jetzt-shoppen-Button.
-        */
+         * Jetzt-shoppen-Button.
+         */
         JButton shopButton =
                 createButton(
                         "Jetzt shoppen",
@@ -493,71 +454,27 @@ private ImageIcon loadCartIcon() {
                         46
                 );
 
-        /*
-        * Position des Jetzt-shoppen-Buttons.
-        */
         shopButton.setBounds(
                 500,
-                400,
+                525,
                 200,
                 46
         );
 
-
-            shopButton.addActionListener(event ->       //muss später weggeschmisen werden
-                    addTestProduct()                            //und dan untere teli unkommentieren
-            );                                                  //diese Teil nur für Testzwecke
         /*
-        shopButton.addActionListener(event ->
-                showPlaceholderMessage(
-
-                        "Das Home- oder Produktfenster "
+         * Das Produktfenster ist noch nicht verbunden.
+         */
+        shopButton.addActionListener(
+                event -> showPlaceholderMessage(
+                        "Das Produktfenster "
                                 + "wird später geöffnet."
                 )
         );
-        */
 
 
         /*
-        * Panel mit Anmelden und Registrieren.
-        */
-        JPanel accountButtonPanel =
-                createAccountButtonPanel();
-
-        /*
-        * Position der unteren beiden Buttons.
-        */
-        accountButtonPanel.setBounds(
-                425,
-                350,
-                350,
-                55
-        );
-
-        contentPanel.add(welcomeLabel);
-        contentPanel.add(textLabel);
-        contentPanel.add(shopButton);
-        contentPanel.add(accountButtonPanel);
-
-        return contentPanel;
-        }
-
-    /*
-     * Erstellt Anmeldung und Registrierung.
-     */
-    private JPanel createAccountButtonPanel() {
-
-        JPanel accountPanel =
-                new JPanel(
-                        new FlowLayout(
-                                FlowLayout.CENTER,
-                                16,
-                                0
-                        )
-                );
-
-        accountPanel.setOpaque(false);
-
+         * Mein-Konto-Button.
+         */
         JButton profileButton =
                 createButton(
                         "Mein Konto",
@@ -565,8 +482,21 @@ private ImageIcon loadCartIcon() {
                         42
                 );
 
-        profileButton.addActionListener(event -> openProfileFrame());
+        profileButton.setBounds(
+                345,
+                535,
+                145,
+                42
+        );
 
+        profileButton.addActionListener(
+                event -> openProfileFrame()
+        );
+
+
+        /*
+         * Ausloggen-Button.
+         */
         JButton logoutButton =
                 createButton(
                         "Ausloggen",
@@ -574,15 +504,33 @@ private ImageIcon loadCartIcon() {
                         42
                 );
 
-        logoutButton.addActionListener(event -> logout());
+        logoutButton.setBounds(
+                710,
+                535,
+                145,
+                42
+        );
 
-        accountPanel.add(profileButton);
-        accountPanel.add(logoutButton);
+        logoutButton.addActionListener(
+                event -> logout()
+        );
 
-        return accountPanel;
+
+        contentPanel.add(welcomeLabel);
+        contentPanel.add(textLabel);
+        contentPanel.add(shopButton);
+        contentPanel.add(profileButton);
+        contentPanel.add(logoutButton);
+
+        return contentPanel;
     }
 
+
+    /*
+     * Öffnet das Profil des eingeloggten Benutzers.
+     */
     private void openProfileFrame() {
+
         ProfileFrame profileFrame =
                 new ProfileFrame(
                         userService,
@@ -593,7 +541,12 @@ private ImageIcon loadCartIcon() {
         profileFrame.setVisible(true);
     }
 
+
+    /*
+     * Meldet den Benutzer ab.
+     */
     private void logout() {
+
         int answer =
                 JOptionPane.showConfirmDialog(
                         this,
@@ -602,130 +555,39 @@ private ImageIcon loadCartIcon() {
                         JOptionPane.YES_NO_OPTION
                 );
 
+        /*
+         * Bei Nein bleibt das Startfenster geöffnet.
+         */
         if (answer != JOptionPane.YES_OPTION) {
             return;
         }
 
-        if (cartFrame != null) {
+        /*
+         * Ein geöffnetes Warenkorbfenster
+         * wird ebenfalls geschlossen.
+         */
+        if (cartFrame != null
+                && cartFrame.isDisplayable()) {
+
             cartFrame.dispose();
         }
 
+        /*
+         * Der Warenkorb wird hier nicht gelöscht.
+         *
+         * Er wird über die Benutzer-ID gespeichert
+         * und soll nach dem nächsten Login
+         * weiterhin vorhanden sein.
+         */
         LoginFrame loginFrame =
                 new LoginFrame(userService);
 
+        loginFrame.setLocationRelativeTo(this);
         loginFrame.setVisible(true);
 
         dispose();
     }
 
-    /*
-     * Erstellt den unteren weißen Bereich.
-     */
-    private JPanel createBottomPanel() {
-
-        JPanel bottomPanel =
-                new JPanel();
-
-        bottomPanel.setBackground(Color.WHITE);
-
-        /*
-         * Die Höhe beträgt:
-         *
-         * 70 Pixel mal 3 = 210 Pixel
-         */
-        bottomPanel.setPreferredSize(
-                new Dimension(
-                        1200,
-                        BOTTOM_PANEL_HEIGHT
-                )
-        );
-
-        bottomPanel.setLayout(
-                new BoxLayout(
-                        bottomPanel,
-                        BoxLayout.Y_AXIS
-                )
-        );
-
-        /*
-         * SPORT und SHOP sind getrennte Labels.
-         *
-         * Dadurch können beide Wörter
-         * unterschiedliche Farben haben.
-         */
-        JPanel brandPanel =
-                new JPanel(
-                        new FlowLayout(
-                                FlowLayout.CENTER,
-                                0,
-                                0
-                        )
-                );
-
-        brandPanel.setBackground(Color.WHITE);
-
-        brandPanel.setAlignmentX(
-                Component.CENTER_ALIGNMENT
-        );
-
-        JLabel sportLabel =
-                new JLabel("Sport");
-
-        sportLabel.setForeground(Color.BLACK);
-
-        sportLabel.setFont(
-                new Font(
-                        "SansSerif",
-                        Font.BOLD,
-                        42
-                )
-        );
-
-        JLabel shopLabel =
-                new JLabel("Shop");
-
-        /*
-         * Lila Farbe:
-         *
-         * Rot   = 128
-         * Grün  = 0
-         * Blau  = 180
-         */
-        shopLabel.setForeground(
-                new Color(
-                        128,
-                        0,
-                        180
-                )
-        );
-
-        shopLabel.setFont(
-                new Font(
-                        "SansSerif",
-                        Font.BOLD,
-                        42
-                )
-        );
-
-        brandPanel.add(sportLabel);
-        brandPanel.add(shopLabel);
-
-        /*
-         * Der Schriftzug wird vertikal und
-         * horizontal zentriert.
-         */
-        bottomPanel.add(
-                Box.createVerticalGlue()
-        );
-
-        bottomPanel.add(brandPanel);
-
-        bottomPanel.add(
-                Box.createVerticalGlue()
-        );
-
-        return bottomPanel;
-    }
 
     /*
      * Erstellt einen einheitlichen Button.
@@ -769,8 +631,9 @@ private ImageIcon loadCartIcon() {
         return button;
     }
 
+
     /*
-     * Zeigt die Platzhalter-Meldungen.
+     * Zeigt eine Platzhalter-Meldung.
      */
     private void showPlaceholderMessage(
             String message) {
@@ -782,6 +645,7 @@ private ImageIcon loadCartIcon() {
                 JOptionPane.INFORMATION_MESSAGE
         );
     }
+
 
     /*
      * Lädt das Hintergrundbild.
@@ -798,18 +662,19 @@ private ImageIcon loadCartIcon() {
          * das Bild über den Klassenpfad zu laden.
          */
         if (imageUrl != null) {
+
             return new ImageIcon(
                     imageUrl
             ).getImage();
         }
 
         /*
-         * Falls das nicht funktioniert,
-         * werden diese normalen Pfade geprüft.
+         * Falls der Klassenpfad nicht funktioniert,
+         * werden normale Dateipfade geprüft.
          */
         String[] possiblePaths = {
-                "src/ui/images/nike-wm.jpg",
-                "SportShop-Grundlage/src/ui/images/nike-wm.jpg"
+                "src/ui/images/nike-wm.png",
+                "SportShop-Grundlage/src/ui/images/nike-wm.png"
         };
 
         for (String path : possiblePaths) {
@@ -818,6 +683,7 @@ private ImageIcon loadCartIcon() {
                     new File(path);
 
             if (imageFile.exists()) {
+
                 return new ImageIcon(
                         path
                 ).getImage();
@@ -828,7 +694,7 @@ private ImageIcon loadCartIcon() {
                 this,
                 "Das Hintergrundbild wurde nicht gefunden.\n"
                         + "Erwarteter Ort:\n"
-                        + "src/ui/images/nike-wm.jpg",
+                        + "src/ui/images/nike-wm.png",
                 "Bild fehlt",
                 JOptionPane.ERROR_MESSAGE
         );
@@ -836,165 +702,58 @@ private ImageIcon loadCartIcon() {
         return null;
     }
 
-    private void addTestProduct() {             //NUR FÜR TESTZWECKE, muss spätergelöscht werden
-        Product testProduct = new Product(
-                1,
-                "Testschuhe",
-                "Produkt nur zum Testen",
-                49.99,
-                "Schuhe",
-                ""
-        );
-
-        boolean added = cartService.addToCart(
-                testProduct,
-                1
-        );
-
-        if (added) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Testprodukt wurde zum Warenkorb hinzugefügt."
-            );
-
-            if (cartFrame != null
-                    && cartFrame.isDisplayable()) {
-                cartFrame.refreshCartView();
-            }
-        }
-    }
 
     /*
-     * Dieses Panel zeichnet das Hintergrundbild.
+     * Zeichnet das Hintergrundbild.
      */
- /*
- * Dieses Panel zeichnet das Hintergrundbild
- * in einer ovalen Form.
- *
- * Der Rand wird langsam weiß,
- * damit das Bild nach außen ausblendet.
+    private static class BackgroundPanel extends JPanel {
 
- * Dieses Panel zeichnet das Hintergrundbild
- * mit einem weichen Transparenzverlauf.
- *
- * In der Mitte bleibt das Bild sichtbar.
- * Zu den äußeren Bereichen wird es langsam transparent.
- */
-/*
- * Zeichnet das Hintergrundbild
- * mit einem weichen Verlauf an den Rändern.
- */
-/*
- * Zeichnet das Hintergrundbild.
- * Nur links und rechts wird das Bild
- * langsam weiß ausgeblendet.
- */
-private static class BackgroundPanel extends JPanel {
+        private final Image backgroundImage;
 
-    private final Image backgroundImage;
 
-    // Breite des Verlaufs links und rechts
-    private static final int FADE_SIZE = 75;
+        public BackgroundPanel(
+                Image backgroundImage) {
 
-    // Stärke des weißen Randes
-    private static final int EDGE_ALPHA = 180;
+            this.backgroundImage =
+                    backgroundImage;
 
-    public BackgroundPanel(Image backgroundImage) {
-        this.backgroundImage = backgroundImage;
-
-        setBackground(Color.WHITE);
-        setOpaque(true);
-    }
-
-    @Override
-    protected void paintComponent(Graphics graphics) {
-
-        super.paintComponent(graphics);
-
-        if (backgroundImage == null) {
-            return;
+            setBackground(Color.WHITE);
+            setOpaque(true);
         }
 
-        Graphics2D graphics2D =
-                (Graphics2D) graphics.create();
 
-        graphics2D.setRenderingHint(
-                RenderingHints.KEY_INTERPOLATION,
-                RenderingHints.VALUE_INTERPOLATION_BILINEAR
-        );
+        @Override
+        protected void paintComponent(
+                Graphics graphics) {
 
-        /*
-         * Das vollständige Bild wird normal gezeichnet.
-         */
-        graphics2D.drawImage(
-                backgroundImage,
-                0,
-                0,
-                getWidth(),
-                getHeight(),
-                this
-        );
+            super.paintComponent(graphics);
 
-        Color white =
-                new Color(
-                        255,
-                        255,
-                        255,
-                        EDGE_ALPHA
-                );
+            if (backgroundImage == null) {
+                return;
+            }
 
-        Color transparentWhite =
-                new Color(
-                        255,
-                        255,
-                        255,
-                        0
-                );
+            Graphics2D graphics2D =
+                    (Graphics2D) graphics.create();
 
-        /*
-         * Verlauf vom linken Rand in das Bild.
-         */
-        graphics2D.setPaint(
-                new GradientPaint(
-                        0,
-                        0,
-                        white,
-                        FADE_SIZE,
-                        0,
-                        transparentWhite
-                )
-        );
+            graphics2D.setRenderingHint(
+                    RenderingHints.KEY_INTERPOLATION,
+                    RenderingHints.VALUE_INTERPOLATION_BILINEAR
+            );
 
-        graphics2D.fillRect(
-                0,
-                0,
-                FADE_SIZE,
-                getHeight()
-        );
+            /*
+             * Das Bild füllt den gesamten Bildbereich.
+             * Ein zusätzlicher weißer Verlauf wird nicht gezeichnet.
+             */
+            graphics2D.drawImage(
+                    backgroundImage,
+                    0,
+                    0,
+                    getWidth(),
+                    getHeight(),
+                    this
+            );
 
-        /*
-         * Verlauf vom rechten Rand in das Bild.
-         */
-        graphics2D.setPaint(
-                new GradientPaint(
-                        getWidth(),
-                        0,
-                        white,
-                        getWidth() - FADE_SIZE,
-                        0,
-                        transparentWhite
-                )
-        );
-
-        graphics2D.fillRect(
-                getWidth() - FADE_SIZE,
-                0,
-                FADE_SIZE,
-                getHeight()
-        );
-
-        graphics2D.dispose();
+            graphics2D.dispose();
+        }
     }
-}
-
 }
