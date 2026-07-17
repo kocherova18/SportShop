@@ -29,7 +29,7 @@ public class ProfileFrame extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(9, 1, 10, 10));
+        panel.setLayout(new GridLayout(8, 1, 10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         JLabel titleLabel = new JLabel("Mein Konto");
@@ -44,9 +44,6 @@ public class ProfileFrame extends JFrame {
         JButton changePasswordButton = new JButton("Passwort ändern");
         changePasswordButton.addActionListener(e -> openChangePasswordFrame());
 
-        JButton logoutButton = new JButton("Ausloggen");
-        logoutButton.addActionListener(e -> logout());
-
         JButton closeButton = new JButton("Schließen");
         closeButton.addActionListener(e -> dispose());
 
@@ -57,7 +54,6 @@ public class ProfileFrame extends JFrame {
         panel.add(addressLabel);
         panel.add(editProfileButton);
         panel.add(changePasswordButton);
-        panel.add(logoutButton);
         panel.add(closeButton);
 
         add(panel);
@@ -114,11 +110,4 @@ public class ProfileFrame extends JFrame {
         roleLabel.setText("Rolle: " + user.getRole());
         addressLabel.setText("Adresse: " + getAddressText());
     }
-
-    private void logout() {
-        LoginFrame loginFrame = new LoginFrame(userService);
-        loginFrame.setVisible(true);
-        dispose();
-    }
-
 }
