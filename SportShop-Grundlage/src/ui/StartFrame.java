@@ -1,5 +1,11 @@
 package ui;
 
+
+import data.DataManager;
+import service.ProductService;
+import java.util.ArrayList;
+import java.util.List;
+import model.Product;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -43,6 +49,7 @@ public class StartFrame extends JFrame {
     private final CartService cartService;
     private final OrderService orderService;
     private final InvoiceService invoiceService;
+    private final ProductService productService;
     private final User currentUser;
 
     private CartFrame cartFrame;
@@ -71,6 +78,8 @@ public class StartFrame extends JFrame {
         this.cartService = cartService;
         this.orderService = orderService;
         this.invoiceService = invoiceService;
+        this.productService =
+                new ProductService(new DataManager().loadProducts());
         this.currentUser = currentUser;
 
         initializeUI();
@@ -137,13 +146,103 @@ public class StartFrame extends JFrame {
          */
         if (SHOW_CART_BUTTON) {
 
+            JPanel topRightPanel =
+                    new JPanel(new FlowLayout(
+                            FlowLayout.RIGHT,
+                            10,
+                            0
+                    ));
+
+            topRightPanel.setBackground(Color.BLACK);
+
+            topRightPanel.add(createCartArea());
+            topRightPanel.add(createOrdersArea());
+
             topPanel.add(
-                    createCartArea(),
+                    topRightPanel,
                     BorderLayout.EAST
             );
         }
 
         return topPanel;
+    }
+
+    private JPanel createOrdersArea() {
+
+        JPanel ordersPanel =
+                new JPanel(
+                        new FlowLayout(
+                                FlowLayout.RIGHT,
+                                0,
+                                0
+                        )
+                );
+
+        ordersPanel.setBackground(
+                Color.decode("#2C044F")
+        );
+
+        JButton ordersButton =
+                new JButton("Meine Bestellungen");
+
+
+        ordersButton.setPreferredSize(
+                new Dimension(
+                        260,
+                        55
+                )
+        );
+
+        ordersButton.setFont(
+                new Font(
+                        "SansSerif",
+                        Font.BOLD,
+                        15
+                )
+        );
+
+        ordersButton.setForeground(Color.WHITE);
+        ordersButton.setBorderPainted(false);
+        ordersButton.setFocusPainted(false);
+        ordersButton.setContentAreaFilled(false);
+        ordersButton.setOpaque(false);
+
+        ordersButton.setPreferredSize(
+                new Dimension(
+                        220,
+                        55
+                )
+        );
+
+        ordersButton.setFont(
+                new Font(
+                        "SansSerif",
+                        Font.BOLD,
+                        15
+                )
+        );
+
+
+        ordersButton.setCursor(
+                new Cursor(
+                        Cursor.HAND_CURSOR
+                )
+        );
+
+        ordersButton.addActionListener(event -> {
+
+            OrderHistoryFrame frame =
+                    new OrderHistoryFrame(
+                            currentUser
+                    );
+
+            frame.setLocationRelativeTo(this);
+            frame.setVisible(true);
+        });
+
+        ordersPanel.add(ordersButton);
+
+        return ordersPanel;
     }
 
 
@@ -239,6 +338,8 @@ public class StartFrame extends JFrame {
      * Öffnet den Warenkorb.
      */
     private void openCartFrame() {
+
+
 
         /*
          * Ein neues Warenkorbfenster wird nur erstellt,
@@ -454,6 +555,7 @@ public class StartFrame extends JFrame {
                         46
                 );
 
+
         shopButton.setBounds(
                 500,
                 525,
@@ -461,14 +563,8 @@ public class StartFrame extends JFrame {
                 46
         );
 
-        /*
-         * Das Produktfenster ist noch nicht verbunden.
-         */
         shopButton.addActionListener(
-                event -> showPlaceholderMessage(
-                        "Das Produktfenster "
-                                + "wird später geöffnet."
-                )
+                event -> openProductList()
         );
 
 
@@ -755,5 +851,17 @@ public class StartFrame extends JFrame {
 
             graphics2D.dispose();
         }
+    }
+
+    private void openProductList() {
+
+        ProductListFrame frame =
+                new ProductListFrame(
+                        productService,
+                        cartService
+                );
+
+        frame.setLocationRelativeTo(this);
+        frame.setVisible(true);
     }
 }

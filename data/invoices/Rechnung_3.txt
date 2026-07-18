@@ -1,0 +1,24 @@
+SPORTSHOP - RECHNUNG
+======================
+
+Rechnungsnummer: 3
+Bestelldatum: 18.07.2026 20:44
+Status: ERSTELLT
+
+Kunde:
+Kunde
+test1@gmail.com
+test 1, 11111 test1, test1
+
+Artikel:
+----------------------
+1 x Trainingshose
+Einzelpreis: 49,99 EUR
+Zwischensumme: 49,99 EUR
+
+1 x Laufschuhe
+Einzelpreis: 89,99 EUR
+Zwischensumme: 89,99 EUR
+
+----------------------
+Gesamtbetrag: 139,98 EUR

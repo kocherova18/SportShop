@@ -1,0 +1,20 @@
+SPORTSHOP - RECHNUNG
+======================
+
+Rechnungsnummer: 2
+Bestelldatum: 18.07.2026 15:55
+Status: ERSTELLT
+
+Kunde:
+Kunde
+test1@gmail.com
+test 1, 11111 test1, test1
+
+Artikel:
+----------------------
+8 x Sportjacke
+Einzelpreis: 79,99 EUR
+Zwischensumme: 639,92 EUR
+
+----------------------
+Gesamtbetrag: 639,92 EUR

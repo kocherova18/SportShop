@@ -1,14 +1,20 @@
 import data.DataManager;
-import model.User;
+import service.AdminService;
 import service.UserService;
-import ui.ChangePasswordFrame;
 import ui.LoginFrame;
 
 public class Main {
 
     public static void main(String[] args) {
         DataManager dataManager = new DataManager();
-        UserService userService = new UserService(dataManager);
+
+        AdminService adminService =
+                new AdminService(dataManager);
+
+        adminService.createDefaultAdminIfMissing();
+
+        UserService userService =
+                new UserService(dataManager);
 
         LoginFrame loginFrame = new LoginFrame(userService);
         loginFrame.setVisible(true);

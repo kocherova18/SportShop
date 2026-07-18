@@ -70,15 +70,27 @@ public class LoginFrame extends JFrame {
             OrderService orderService = new OrderService(dataManager);
             InvoiceService invoiceService = new InvoiceService();
 
-            StartFrame startFrame = new StartFrame(
-                    userService,
-                    cartService,
-                    orderService,
-                    invoiceService,
-                    loggedInUser
-            );
+            if (loggedInUser.isAdmin()) {
+                AdminFrame adminFrame = new AdminFrame(
+                        userService,
+                        orderService,
+                        loggedInUser
+                );
 
-            startFrame.setVisible(true);
+                adminFrame.setLocationRelativeTo(this);
+                adminFrame.setVisible(true);
+            } else {
+                StartFrame startFrame = new StartFrame(
+                        userService,
+                        cartService,
+                        orderService,
+                        invoiceService,
+                        loggedInUser
+                );
+
+                startFrame.setVisible(true);
+            }
+
             dispose();
 
         }catch (IllegalArgumentException e){
