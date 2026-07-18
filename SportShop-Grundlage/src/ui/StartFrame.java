@@ -1,5 +1,11 @@
 package ui;
 
+
+import data.DataManager;
+import service.ProductService;
+import java.util.ArrayList;
+import java.util.List;
+import model.Product;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -43,6 +49,7 @@ public class StartFrame extends JFrame {
     private final CartService cartService;
     private final OrderService orderService;
     private final InvoiceService invoiceService;
+    private final ProductService productService;
     private final User currentUser;
 
     private CartFrame cartFrame;
@@ -71,6 +78,8 @@ public class StartFrame extends JFrame {
         this.cartService = cartService;
         this.orderService = orderService;
         this.invoiceService = invoiceService;
+        this.productService =
+                new ProductService(new DataManager().loadProducts());
         this.currentUser = currentUser;
 
         initializeUI();
@@ -239,6 +248,8 @@ public class StartFrame extends JFrame {
      * Öffnet den Warenkorb.
      */
     private void openCartFrame() {
+
+
 
         /*
          * Ein neues Warenkorbfenster wird nur erstellt,
@@ -454,6 +465,7 @@ public class StartFrame extends JFrame {
                         46
                 );
 
+
         shopButton.setBounds(
                 500,
                 525,
@@ -461,14 +473,8 @@ public class StartFrame extends JFrame {
                 46
         );
 
-        /*
-         * Das Produktfenster ist noch nicht verbunden.
-         */
         shopButton.addActionListener(
-                event -> showPlaceholderMessage(
-                        "Das Produktfenster "
-                                + "wird später geöffnet."
-                )
+                event -> openProductList()
         );
 
 
@@ -755,5 +761,17 @@ public class StartFrame extends JFrame {
 
             graphics2D.dispose();
         }
+    }
+
+    private void openProductList() {
+
+        ProductListFrame frame =
+                new ProductListFrame(
+                        productService,
+                        cartService
+                );
+
+        frame.setLocationRelativeTo(this);
+        frame.setVisible(true);
     }
 }

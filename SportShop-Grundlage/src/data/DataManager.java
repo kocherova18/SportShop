@@ -77,21 +77,71 @@ public class DataManager {
     }
 
     public List<Product> loadProducts() {
+
+        File file = new File(PRODUCTS_FILE);
+
+        if (!file.exists()) {
+
+            List<Product> defaultProducts = new ArrayList<>();
+
+            defaultProducts.add(new Product(
+                    1,
+                    "Sport T-Shirt",
+                    "Leichtes Trainingsshirt",
+                    29.99,
+                    "T-Shirt",
+                    ""
+            ));
+
+            defaultProducts.add(new Product(
+                    2,
+                    "Trainingshose",
+                    "Bequeme Trainingshose",
+                    49.99,
+                    "Hose",
+                    ""
+            ));
+
+            defaultProducts.add(new Product(
+                    3,
+                    "Laufschuhe",
+                    "Sportschuhe",
+                    89.99,
+                    "Schuhe",
+                    ""
+            ));
+
+            defaultProducts.add(new Product(
+                    4,
+                    "Sportjacke",
+                    "Winddichte Jacke",
+                    79.99,
+                    "Jacke",
+                    ""
+            ));
+
+            saveProducts(defaultProducts);
+
+            return defaultProducts;
+        }
+
         try {
+
             FileInputStream fs = new FileInputStream(PRODUCTS_FILE);
             ObjectInputStream in = new ObjectInputStream(fs);
 
-            List<Product> products = (List<Product>) in.readObject();
+            List<Product> products =
+                    (List<Product>) in.readObject();
 
             in.close();
+
             return products;
-        } catch (IOException e) {
-            System.err.println(e.toString());
-        } catch (ClassNotFoundException e) {
-            System.err.println(e.toString());
+
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
         }
 
-        return new ArrayList<Product>();
+        return new ArrayList<>();
     }
 
     public void saveOrders(List<Order> orders) {

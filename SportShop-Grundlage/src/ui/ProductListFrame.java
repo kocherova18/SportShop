@@ -1,5 +1,6 @@
 package ui;
 
+import service.CartService;
 import model.Product;
 import service.ProductService;
 
@@ -10,16 +11,21 @@ import java.util.List;
 public class ProductListFrame extends JFrame {
 
     private ProductService productService;
+    private CartService cartService;
     private JList<String> productJList;
     private DefaultListModel<String> listModel;
     private JTextField searchField;
     private JComboBox<String> categoryBox;
+    private List<Product> displayedProducts;
 
-    public ProductListFrame(ProductService productService) {
+    public ProductListFrame(
+            ProductService productService,
+            CartService cartService) {
+        this.cartService = cartService;
         this.productService = productService;
         setTitle("SportShop - Produkte");
         setSize(600, 500);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
 
         // Oben: Suche
@@ -41,13 +47,33 @@ public class ProductListFrame extends JFrame {
         add(topPanel, BorderLayout.NORTH);
 
         // Mitte: Produktliste
+        // Mitte: Produktliste
         listModel = new DefaultListModel<>();
         productJList = new JList<>(listModel);
+
         add(new JScrollPane(productJList), BorderLayout.CENTER);
 
-        // Unten: Button
+// Unten: Buttons
         JButton detailButton = new JButton("Details anzeigen");
-        add(detailButton, BorderLayout.SOUTH);
+        JButton cartButton = new JButton("In den Warenkorb");
+
+        detailButton.setEnabled(false);
+        cartButton.setEnabled(false);
+
+        productJList.addListSelectionListener(e -> {
+            boolean selected =
+                    productJList.getSelectedIndex() != -1;
+
+            detailButton.setEnabled(selected);
+            cartButton.setEnabled(selected);
+        });
+
+        JPanel buttonPanel = new JPanel(new FlowLayout());
+
+        buttonPanel.add(cartButton);
+        buttonPanel.add(detailButton);
+
+        add(buttonPanel, BorderLayout.SOUTH);
 
         // Aktionen
         searchButton.addActionListener(e -> {
@@ -66,13 +92,33 @@ public class ProductListFrame extends JFrame {
         detailButton.addActionListener(e -> {
             int index = productJList.getSelectedIndex();
             if (index >= 0) {
-                List<Product> all = productService.getAllProducts();
-                if (index < all.size()) {
-                    new ProductDetailFrame(all.get(index)).setVisible(true);
+                if (index < displayedProducts.size()) {
+                    new ProductDetailFrame(
+                            displayedProducts.get(index),
+                            cartService
+                    ).setVisible(true);
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "Bitte ein Produkt auswählen!");
             }
+        });
+
+        cartButton.addActionListener(e -> {
+            int index = productJList.getSelectedIndex();
+
+            if (index < 0) {
+                return;
+            }
+
+            cartService.addToCart(
+                    displayedProducts.get(index),
+                    1
+            );
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Produkt wurde zum Warenkorb hinzugefügt."
+            );
         });
 
         // Alle Produkte laden
@@ -81,9 +127,19 @@ public class ProductListFrame extends JFrame {
     }
 
     private void showProducts(List<Product> products) {
+        displayedProducts = products;
+
         listModel.clear();
-        for (Product p : products) {
-            listModel.addElement(p.getName() + " - " + p.getPrice() + "€ - " + p.getCategory());
+
+        for (Product product : displayedProducts) {
+            listModel.addElement(
+                    product.getName()
+                            + " - "
+                            + product.getPrice()
+                            + "€ - "
+                            + product.getCategory()
+            );
         }
     }
 }
+

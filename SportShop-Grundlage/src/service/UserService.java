@@ -136,6 +136,8 @@ public class UserService {
         dataManager.saveUsers(users);
     }
 
+
+
     private boolean isAlreadyRegistered(String email){
         if (email == null){     //falls jemand gibt kein Email ein und aktiviert die Methode,
             return false;       //dann wird er keine Fehlermeldung bekommen
@@ -219,8 +221,8 @@ public class UserService {
 
         return maxID+1;
     }
-    
-    private String hashPassword(String password){
+
+    public static String hashPassword(String password){
         try{
             MessageDigest digest = MessageDigest.getInstance("SHA-256");    //SHA-256 macht aus dem Text Hash
             byte[] hashedBytes = digest.digest(password.getBytes(StandardCharsets.UTF_8));      //SHA-256 arbeitet auf

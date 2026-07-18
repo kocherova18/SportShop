@@ -1,5 +1,6 @@
 package ui;
 
+import service.CartService;
 import model.Product;
 
 import javax.swing.*;
@@ -7,7 +8,9 @@ import java.awt.*;
 
 public class ProductDetailFrame extends JFrame {
 
-    public ProductDetailFrame(Product product) {
+    public ProductDetailFrame(
+            Product product,
+            CartService cartService) {
         setTitle("Produktdetails - " + product.getName());
         setSize(400, 300);
         setLayout(new GridLayout(6, 2, 10, 10));
@@ -27,11 +30,26 @@ public class ProductDetailFrame extends JFrame {
         add(new JLabel("ID:"));
         add(new JLabel(String.valueOf(product.getId())));
 
-        JButton closeButton = new JButton("Schließen");
-        add(new JLabel(""));
+        JButton cartButton =
+                new JButton("In den Warenkorb");
+
+        JButton closeButton =
+                new JButton("Schließen");
+
+        add(cartButton);
         add(closeButton);
 
         closeButton.addActionListener(e -> dispose());
+
+        cartButton.addActionListener(e -> {
+
+            cartService.addToCart(product, 1);
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Produkt wurde zum Warenkorb hinzugefügt."
+            );
+        });
 
         setLocationRelativeTo(null);
     }
