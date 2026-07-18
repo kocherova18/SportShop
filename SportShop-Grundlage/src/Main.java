@@ -1,8 +1,6 @@
 import data.DataManager;
 import service.AdminService;
-import model.User;
 import service.UserService;
-import ui.ChangePasswordFrame;
 import ui.LoginFrame;
 
 public class Main {

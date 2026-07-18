@@ -146,13 +146,103 @@ public class StartFrame extends JFrame {
          */
         if (SHOW_CART_BUTTON) {
 
+            JPanel topRightPanel =
+                    new JPanel(new FlowLayout(
+                            FlowLayout.RIGHT,
+                            10,
+                            0
+                    ));
+
+            topRightPanel.setBackground(Color.BLACK);
+
+            topRightPanel.add(createCartArea());
+            topRightPanel.add(createOrdersArea());
+
             topPanel.add(
-                    createCartArea(),
+                    topRightPanel,
                     BorderLayout.EAST
             );
         }
 
         return topPanel;
+    }
+
+    private JPanel createOrdersArea() {
+
+        JPanel ordersPanel =
+                new JPanel(
+                        new FlowLayout(
+                                FlowLayout.RIGHT,
+                                0,
+                                0
+                        )
+                );
+
+        ordersPanel.setBackground(
+                Color.decode("#2C044F")
+        );
+
+        JButton ordersButton =
+                new JButton("Meine Bestellungen");
+
+
+        ordersButton.setPreferredSize(
+                new Dimension(
+                        260,
+                        55
+                )
+        );
+
+        ordersButton.setFont(
+                new Font(
+                        "SansSerif",
+                        Font.BOLD,
+                        15
+                )
+        );
+
+        ordersButton.setForeground(Color.WHITE);
+        ordersButton.setBorderPainted(false);
+        ordersButton.setFocusPainted(false);
+        ordersButton.setContentAreaFilled(false);
+        ordersButton.setOpaque(false);
+
+        ordersButton.setPreferredSize(
+                new Dimension(
+                        220,
+                        55
+                )
+        );
+
+        ordersButton.setFont(
+                new Font(
+                        "SansSerif",
+                        Font.BOLD,
+                        15
+                )
+        );
+
+
+        ordersButton.setCursor(
+                new Cursor(
+                        Cursor.HAND_CURSOR
+                )
+        );
+
+        ordersButton.addActionListener(event -> {
+
+            OrderHistoryFrame frame =
+                    new OrderHistoryFrame(
+                            currentUser
+                    );
+
+            frame.setLocationRelativeTo(this);
+            frame.setVisible(true);
+        });
+
+        ordersPanel.add(ordersButton);
+
+        return ordersPanel;
     }
 
 
