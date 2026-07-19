@@ -1,13 +1,26 @@
 package ui;
 
 import data.DataManager;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import model.Product;
 import service.ProductService;
 
-import javax.swing.*;
-import java.awt.*;
-
 public class AdminProductFrame extends JFrame {
+
+    /*
+     * In diesem Ordner werden die ausgewählten
+     * Produktbilder gespeichert.
+     */
+    private static final String IMAGE_FOLDER =
+            "data/product-images";
 
     private ProductService productService;
     private DataManager dataManager;
@@ -20,6 +33,17 @@ public class AdminProductFrame extends JFrame {
     private JTextField categoryField;
     private JTextField descriptionField;
 
+    /*
+     * Hier merken wir uns das Bild,
+     * das der Admin ausgewählt hat.
+     */
+    private File selectedImageFile;
+
+    /*
+     * Zeigt den Namen des ausgewählten Bildes an.
+     */
+    private JLabel imageNameLabel;
+
     public AdminProductFrame() {
 
         dataManager = new DataManager();
@@ -29,7 +53,7 @@ public class AdminProductFrame extends JFrame {
         );
 
         setTitle("Produkte verwalten");
-        setSize(650, 400);
+        setSize(750, 450);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -43,8 +67,13 @@ public class AdminProductFrame extends JFrame {
                 BorderLayout.CENTER
         );
 
+        /*
+         * Jetzt gibt es fünf Eingabezeilen:
+         * Name, Preis, Kategorie,
+         * Beschreibung und Produktbild.
+         */
         JPanel inputPanel =
-                new JPanel(new GridLayout(4, 2, 5, 5));
+                new JPanel(new GridLayout(5, 2, 5, 5));
 
         nameField = new JTextField();
         priceField = new JTextField();
@@ -62,6 +91,26 @@ public class AdminProductFrame extends JFrame {
 
         inputPanel.add(new JLabel("Beschreibung:"));
         inputPanel.add(descriptionField);
+
+        /*
+         * Der Admin kann hier ein Bild auswählen.
+         */
+        JButton selectImageButton =
+                new JButton("Bild auswählen");
+
+        imageNameLabel =
+                new JLabel("Kein Bild ausgewählt");
+
+        JPanel imagePanel =
+                new JPanel(new FlowLayout(
+                        FlowLayout.LEFT
+                ));
+
+        imagePanel.add(selectImageButton);
+        imagePanel.add(imageNameLabel);
+
+        inputPanel.add(new JLabel("Produktbild:"));
+        inputPanel.add(imagePanel);
 
         add(inputPanel, BorderLayout.NORTH);
 
@@ -82,29 +131,122 @@ public class AdminProductFrame extends JFrame {
 
         add(buttonPanel, BorderLayout.SOUTH);
 
+        /*
+         * Beim Anklicken eines Produkts werden
+         * seine Daten in die Felder geschrieben.
+         */
         productList.addListSelectionListener(e -> {
+
             Product product =
                     productList.getSelectedValue();
 
             if (product != null) {
-                nameField.setText(product.getName());
-                priceField.setText(
-                        String.valueOf(product.getPrice())
+
+                nameField.setText(
+                        product.getName()
                 );
+
+                priceField.setText(
+                        String.valueOf(
+                                product.getPrice()
+                        )
+                );
+
                 categoryField.setText(
                         product.getCategory()
                 );
+
                 descriptionField.setText(
                         product.getDescription()
                 );
+
+                /*
+                 * Beim Auswählen eines Produkts
+                 * wurde noch kein neues Bild gewählt.
+                 */
+                selectedImageFile = null;
+
+                String imagePath =
+                        product.getImagePath();
+
+                if (imagePath == null
+                        || imagePath.trim().isEmpty()) {
+
+                    imageNameLabel.setText(
+                            "Kein Bild gespeichert"
+                    );
+
+                } else {
+
+                    File imageFile =
+                            new File(imagePath);
+
+                    imageNameLabel.setText(
+                            "Aktuell: "
+                                    + imageFile.getName()
+                    );
+                }
             }
         });
 
-        addButton.addActionListener(e -> addProduct());
-        editButton.addActionListener(e -> editProduct());
-        deleteButton.addActionListener(e -> deleteProduct());
+        selectImageButton.addActionListener(
+                e -> selectImage()
+        );
+
+        addButton.addActionListener(
+                e -> addProduct()
+        );
+
+        editButton.addActionListener(
+                e -> editProduct()
+        );
+
+        deleteButton.addActionListener(
+                e -> deleteProduct()
+        );
 
         refreshList();
+    }
+
+    /*
+     * Öffnet ein Fenster zur Bildauswahl.
+     */
+    private void selectImage() {
+
+        JFileChooser fileChooser =
+                new JFileChooser();
+
+        FileNameExtensionFilter filter =
+                new FileNameExtensionFilter(
+                        "Bilddateien (*.png, *.jpg, *.jpeg)",
+                        "png",
+                        "jpg",
+                        "jpeg"
+                );
+
+        fileChooser.setFileFilter(filter);
+
+        /*
+         * Andere Dateitypen können nicht
+         * ausgewählt werden.
+         */
+        fileChooser.setAcceptAllFileFilterUsed(
+                false
+        );
+
+        int result =
+                fileChooser.showOpenDialog(this);
+
+        if (result
+                == JFileChooser.APPROVE_OPTION) {
+
+            selectedImageFile =
+                    fileChooser.getSelectedFile();
+
+            imageNameLabel.setText(
+                    selectedImageFile.getName()
+            );
+        }
     }
 
     private void refreshList() {
@@ -118,18 +260,44 @@ public class AdminProductFrame extends JFrame {
         }
     }
 
+    /*
+     * Erstellt ein neues Produkt.
+     */
     private void addProduct() {
 
         try {
-            Product product = new Product(
-                    getNextId(),
-                    nameField.getText(),
-                    descriptionField.getText(),
+
+            int productId = getNextId();
+
+            double price =
                     Double.parseDouble(
                             priceField.getText()
-                    ),
+                    );
+
+            /*
+             * Ohne ausgewähltes Bild bleibt
+             * der Bildpfad leer.
+             *
+             * Das Detailfenster zeigt dann
+             * automatisch die weiße Standardfläche.
+             */
+            String imagePath = "";
+
+            if (selectedImageFile != null) {
+
+                imagePath = copyImage(
+                        selectedImageFile,
+                        productId
+                );
+            }
+
+            Product product = new Product(
+                    productId,
+                    nameField.getText(),
+                    descriptionField.getText(),
+                    price,
                     categoryField.getText(),
-                    ""
+                    imagePath
             );
 
             productService.addProduct(product);
@@ -138,28 +306,49 @@ public class AdminProductFrame extends JFrame {
             refreshList();
             clearFields();
 
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Produkt wurde hinzugefügt."
+            );
+
         } catch (NumberFormatException e) {
+
             JOptionPane.showMessageDialog(
                     this,
                     "Preis ist ungültig."
             );
+
+        } catch (IOException e) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Das Bild konnte nicht gespeichert werden.",
+                    "Fehler",
+                    JOptionPane.ERROR_MESSAGE
+            );
         }
     }
 
+    /*
+     * Bearbeitet ein vorhandenes Produkt.
+     */
     private void editProduct() {
 
         Product selected =
                 productList.getSelectedValue();
 
         if (selected == null) {
+
             JOptionPane.showMessageDialog(
                     this,
                     "Bitte ein Produkt auswählen."
             );
+
             return;
         }
 
         try {
+
             selected.setName(
                     nameField.getText()
             );
@@ -178,13 +367,49 @@ public class AdminProductFrame extends JFrame {
                     descriptionField.getText()
             );
 
+            /*
+             * Nur wenn ein neues Bild ausgewählt
+             * wurde, wird das alte Bild ersetzt.
+             *
+             * Ohne neue Auswahl bleibt das
+             * bisherige Bild erhalten.
+             */
+            if (selectedImageFile != null) {
+
+                String newImagePath =
+                        copyImage(
+                                selectedImageFile,
+                                selected.getId()
+                        );
+
+                selected.setImagePath(
+                        newImagePath
+                );
+            }
+
             saveProducts();
             refreshList();
+            clearFields();
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Produkt wurde bearbeitet."
+            );
 
         } catch (NumberFormatException e) {
+
             JOptionPane.showMessageDialog(
                     this,
                     "Preis ist ungültig."
+            );
+
+        } catch (IOException e) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Das Bild konnte nicht gespeichert werden.",
+                    "Fehler",
+                    JOptionPane.ERROR_MESSAGE
             );
         }
     }
@@ -195,10 +420,12 @@ public class AdminProductFrame extends JFrame {
                 productList.getSelectedValue();
 
         if (selected == null) {
+
             JOptionPane.showMessageDialog(
                     this,
                     "Bitte ein Produkt auswählen."
             );
+
             return;
         }
 
@@ -209,6 +436,92 @@ public class AdminProductFrame extends JFrame {
         saveProducts();
         refreshList();
         clearFields();
+    }
+
+    /*
+     * Kopiert das ausgewählte Bild in den
+     * Ordner data/product-images.
+     */
+    private String copyImage(
+            File sourceFile,
+            int productId) throws IOException {
+
+        Path imageFolder =
+                Paths.get(IMAGE_FOLDER);
+
+        /*
+         * Der Ordner wird automatisch erstellt,
+         * wenn er noch nicht existiert.
+         */
+        Files.createDirectories(imageFolder);
+
+        String extension =
+                getFileExtension(
+                        sourceFile.getName()
+                );
+
+        String newFileName =
+                "product_"
+                        + productId
+                        + "."
+                        + extension;
+
+        Path targetPath =
+                imageFolder.resolve(
+                        newFileName
+                );
+
+        Path sourcePath =
+                sourceFile.toPath();
+
+        /*
+         * Verhindert einen Fehler, falls bereits
+         * genau dieselbe Datei ausgewählt wurde.
+         */
+        if (!sourcePath
+                .toAbsolutePath()
+                .normalize()
+                .equals(
+                        targetPath
+                                .toAbsolutePath()
+                                .normalize()
+                )) {
+
+            Files.copy(
+                    sourcePath,
+                    targetPath,
+                    StandardCopyOption.REPLACE_EXISTING
+            );
+        }
+
+        /*
+         * Unter Windows werden Backslashes
+         * durch normale Schrägstriche ersetzt.
+         */
+        return targetPath
+                .toString()
+                .replace("\\", "/");
+    }
+
+    /*
+     * Liest die Dateiendung aus.
+     *
+     * Beispiel:
+     * schuhbild.png -> png
+     */
+    private String getFileExtension(
+            String fileName) {
+
+        int dotPosition =
+                fileName.lastIndexOf('.');
+
+        if (dotPosition == -1) {
+            return "png";
+        }
+
+        return fileName
+                .substring(dotPosition + 1)
+                .toLowerCase();
     }
 
     private void saveProducts() {
@@ -239,6 +552,12 @@ public class AdminProductFrame extends JFrame {
         priceField.setText("");
         categoryField.setText("");
         descriptionField.setText("");
+
+        selectedImageFile = null;
+
+        imageNameLabel.setText(
+                "Kein Bild ausgewählt"
+        );
 
         productList.clearSelection();
     }
