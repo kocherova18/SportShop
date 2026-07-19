@@ -1,0 +1,24 @@
+# Kompilierte Java-Dateien
+out/
+bin/
+**/bin/
+*.class
+.build-check/
+
+# Editor-Dateien
+.vscode/
+.idea/
+*.iml
+
+# Lokale Benutzer- und Bestelldaten
+data/users.dat
+data/orders.dat
+data/cart_*.dat
+data/invoices/
+
+SportShop-Grundlage/data/users.dat
+SportShop-Grundlage/data/orders.dat
+SportShop-Grundlage/data/cart_*.dat
+SportShop-Grundlage/data/invoices/
+
+# Der gemeinsame Produktbestand data/products.dat bleibt erlaubt
