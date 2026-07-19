@@ -1,0 +1,20 @@
+SPORTSHOP - RECHNUNG
+======================
+
+Rechnungsnummer: 2
+Bestelldatum: 17.07.2026 21:37
+Status: ERSTELLT
+
+Kunde:
+Dorota
+example@example.com
+Examplestraße 2137, 09876 Berlin, Deutschland
+
+Artikel:
+----------------------
+3 x Testschuhe
+Einzelpreis: 49,99 EUR
+Zwischensumme: 149,97 EUR
+
+----------------------
+Gesamtbetrag: 149,97 EUR
