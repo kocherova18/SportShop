@@ -1,0 +1,20 @@
+SPORTSHOP - RECHNUNG
+======================
+
+Rechnungsnummer: 4
+Bestelldatum: 19.07.2026 17:44
+Status: ERSTELLT
+
+Kunde:
+me
+example@example.com
+Examplestraße 2137, 09876 Berlin, Deutschland
+
+Artikel:
+----------------------
+5 x Testschuhe
+Einzelpreis: 49,99 EUR
+Zwischensumme: 249,95 EUR
+
+----------------------
+Gesamtbetrag: 249,95 EUR

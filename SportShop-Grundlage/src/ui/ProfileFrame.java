@@ -21,9 +21,7 @@ public class ProfileFrame extends JFrame {
         this(null, user);
     }
 
-    public ProfileFrame(
-            UserService userService,
-            User user) {
+    public ProfileFrame(UserService userService, User user) {
 
         this.userService = userService;
         this.user = user;
@@ -34,87 +32,43 @@ public class ProfileFrame extends JFrame {
 
         JPanel panel = new JPanel();
 
-        panel.setLayout(
-                new GridLayout(8, 1, 10, 10)
-        );
+        panel.setLayout(new GridLayout(8, 1, 10, 10));
 
-        JLabel titleLabel =
-                new JLabel("Mein Konto");
+        JLabel titleLabel = new JLabel("Mein Konto");
 
-        titleLabel.setHorizontalAlignment(
-                SwingConstants.CENTER
-        );
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        titleLabel.setFont(
-                new Font(
-                        "SansSerif",
-                        Font.BOLD,
-                        26
-                )
-        );
+        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 26));
 
-        titleLabel.setForeground(
-                new Color(128, 0, 180)
-        );
+        titleLabel.setForeground(new Color(128, 0, 180));
 
-        nameLabel =
-                new JLabel(
-                        "Name: " + user.getName()
-                );
+        nameLabel = new JLabel("Name: " + user.getName());
 
-        emailLabel =
-                new JLabel(
-                        "E-Mail: " + user.getEmail()
-                );
+        emailLabel = new JLabel("E-Mail: " + user.getEmail());
 
-        roleLabel =
-                new JLabel(
-                        "Rolle: " + user.getRole()
-                );
+        roleLabel = new JLabel("Rolle: " + user.getRole());
 
-        addressLabel =
-                new JLabel(
-                        "Adresse: " + getAddressText()
-                );
+        addressLabel = new JLabel("Adresse: " + getAddressText());
 
-        JButton editProfileButton =
-                new JButton("Profil bearbeiten");
+        JButton editProfileButton = new JButton("Profil bearbeiten");
 
-        editProfileButton.addActionListener(
-                e -> openEditProfileFrame()
-        );
+        editProfileButton.addActionListener(e -> openEditProfileFrame());
 
-        editProfileButton.setBackground(
-                new Color(128, 0, 180)
-        );
+        editProfileButton.setBackground(new Color(128, 0, 180));
 
-        editProfileButton.setForeground(
-                Color.WHITE
-        );
+        editProfileButton.setForeground(Color.WHITE);
 
         editProfileButton.setFocusPainted(false);
 
-        editProfileButton.setFont(
-                new Font(
-                        "SansSerif",
-                        Font.BOLD,
-                        14
-                )
-        );
+        editProfileButton.setFont(new Font("SansSerif", Font.BOLD,14));
 
-        JButton changePasswordButton =
-                new JButton("Passwort ändern");
+        JButton changePasswordButton = new JButton("Passwort ändern");
 
-        changePasswordButton.addActionListener(
-                e -> openChangePasswordFrame()
-        );
+        changePasswordButton.addActionListener(e -> openChangePasswordFrame());
 
-        JButton closeButton =
-                new JButton("Schließen");
+        JButton closeButton = new JButton("Schließen");
 
-        closeButton.addActionListener(
-                e -> dispose()
-        );
+        closeButton.addActionListener(e -> dispose());
 
         panel.add(titleLabel);
         panel.add(nameLabel);
@@ -125,48 +79,25 @@ public class ProfileFrame extends JFrame {
         panel.add(changePasswordButton);
         panel.add(closeButton);
 
-        panel.setPreferredSize(
-                new Dimension(430, 420)
-        );
+        panel.setPreferredSize(new Dimension(430, 420));
 
         panel.setBackground(Color.WHITE);
 
-        panel.setBorder(
-                BorderFactory.createCompoundBorder(
-                        BorderFactory.createLineBorder(
-                                new Color(128, 0, 180),
-                                2
-                        ),
-                        BorderFactory.createEmptyBorder(
-                                20,
-                                25,
-                                20,
-                                25
-                        )
+        panel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(
+                        new Color(128, 0, 180), 2),
+                        BorderFactory.createEmptyBorder(20, 25, 20, 25)
                 )
         );
 
-        URL imageUrl =
-                ProfileFrame.class.getResource(
-                        "/ui/images/sportShop_background2.jpg"
-                );
+        URL imageUrl = ProfileFrame.class.getResource("/ui/images/sportShop_background2.jpg");
 
         if (imageUrl != null) {
+            ImageIcon backgroundIcon = new ImageIcon(imageUrl);
 
-            /*
-             * Obrazek zostaje użyty w oryginalnym
-             * rozmiarze. Nie używamy getScaledInstance(),
-             * więc Java go nie rozmywa.
-             */
-            ImageIcon backgroundIcon =
-                    new ImageIcon(imageUrl);
+            JLabel backgroundLabel = new JLabel(backgroundIcon);
 
-            JLabel backgroundLabel =
-                    new JLabel(backgroundIcon);
-
-            backgroundLabel.setLayout(
-                    new GridBagLayout()
-            );
+            backgroundLabel.setLayout(new GridBagLayout());
 
             backgroundLabel.add(panel);
 
@@ -174,39 +105,17 @@ public class ProfileFrame extends JFrame {
 
         } else {
 
-            JPanel backgroundPanel =
-                    new JPanel(
-                            new GridBagLayout()
-                    );
+            JPanel backgroundPanel = new JPanel(new GridBagLayout());
 
-            /*
-             * Rozmiar zastępczy, gdy obrazka
-             * nie udało się znaleźć.
-             */
-            backgroundPanel.setPreferredSize(
-                    new Dimension(1000, 600)
-            );
+            backgroundPanel.setPreferredSize(new Dimension(1000, 600));
 
-            backgroundPanel.setBackground(
-                    new Color(235, 235, 240)
-            );
+            backgroundPanel.setBackground(new Color(235, 235, 240));
 
             backgroundPanel.add(panel);
 
             setContentPane(backgroundPanel);
         }
-
-        /*
-         * pack() dopasowuje wnętrze okna dokładnie
-         * do rozmiaru obrazka.
-         */
         pack();
-
-        /*
-         * Centrowanie robimy po pack(),
-         * ponieważ dopiero wtedy okno zna
-         * swój ostateczny rozmiar.
-         */
         setLocationRelativeTo(null);
     }
 
@@ -223,18 +132,12 @@ public class ProfileFrame extends JFrame {
             JOptionPane.showMessageDialog(
                     this,
                     "Passwortänderung ist hier nicht verfügbar.",
-                    "Fehler",
-                    JOptionPane.ERROR_MESSAGE
-            );
+                    "Fehler", JOptionPane.ERROR_MESSAGE);
 
             return;
         }
 
-        ChangePasswordFrame changePasswordFrame =
-                new ChangePasswordFrame(
-                        userService,
-                        user
-                );
+        ChangePasswordFrame changePasswordFrame = new ChangePasswordFrame(userService, user);
 
         changePasswordFrame.setLocationRelativeTo(this);
         changePasswordFrame.setVisible(true);
@@ -252,11 +155,7 @@ public class ProfileFrame extends JFrame {
             return;
         }
 
-        EditProfileFrame editProfileFrame =
-                new EditProfileFrame(
-                        userService,
-                        user
-                );
+        EditProfileFrame editProfileFrame = new EditProfileFrame(userService, user);
 
         editProfileFrame.addWindowListener(
                 new java.awt.event.WindowAdapter() {
@@ -267,28 +166,19 @@ public class ProfileFrame extends JFrame {
 
                         refreshProfileData();
                     }
-                }
-        );
+                });
 
         editProfileFrame.setLocationRelativeTo(this);
         editProfileFrame.setVisible(true);
     }
 
     private void refreshProfileData() {
-        nameLabel.setText(
-                "Name: " + user.getName()
-        );
+        nameLabel.setText("Name: " + user.getName());
 
-        emailLabel.setText(
-                "E-Mail: " + user.getEmail()
-        );
+        emailLabel.setText("E-Mail: " + user.getEmail());
 
-        roleLabel.setText(
-                "Rolle: " + user.getRole()
-        );
+        roleLabel.setText("Rolle: " + user.getRole());
 
-        addressLabel.setText(
-                "Adresse: " + getAddressText()
-        );
+        addressLabel.setText("Adresse: " + getAddressText());
     }
 }
