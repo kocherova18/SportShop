@@ -41,6 +41,13 @@ public class RegisterFrame extends JFrame {
         registerButton.setForeground(Color.BLACK);
         registerButton.setFocusPainted(false);
 
+        JButton cancelButton = new JButton("Abbrechen");
+        cancelButton.addActionListener(e -> dispose());
+
+        cancelButton.setBackground(new Color(210, 170, 230));
+        cancelButton.setForeground(Color.BLACK);
+        cancelButton.setFocusPainted(false);
+
 
         panel.add(emailLabel);
         panel.add(emailField);
@@ -48,7 +55,7 @@ public class RegisterFrame extends JFrame {
         panel.add(passwordLabel);
         panel.add(passwordField);
 
-        panel.add(new JLabel(""));
+        panel.add(cancelButton);
         panel.add(registerButton);
 
         panel.setPreferredSize(new Dimension(330, 170));
