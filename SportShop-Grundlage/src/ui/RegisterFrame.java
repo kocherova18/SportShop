@@ -36,7 +36,7 @@ public class RegisterFrame extends JFrame {
         JButton registerButton = new JButton("Registrieren");
         registerButton.addActionListener(e -> registerUser());
 
-        registerButton.setBackground(new Color(128, 0, 180));
+        registerButton.setBackground(new Color(210, 170, 230));
 
         registerButton.setForeground(Color.BLACK);
         registerButton.setFocusPainted(false);
