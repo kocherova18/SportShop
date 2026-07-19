@@ -1,14 +1,13 @@
 package ui;
 
 import model.User;
-import service.UserService;
-
 import javax.swing.*;
 import java.awt.*;
+import service.UserService;
+import ui.EditProfileFrame;
 import java.net.URL;
 
 public class ProfileFrame extends JFrame {
-
     private User user;
     private UserService userService;
 
@@ -19,56 +18,59 @@ public class ProfileFrame extends JFrame {
 
     public ProfileFrame(User user) {
         this(null, user);
+        pack();
+        setLocationRelativeTo(null);
     }
 
-    public ProfileFrame(UserService userService, User user) {
-
+    public ProfileFrame(UserService userService, User user){
         this.userService = userService;
         this.user = user;
 
         setTitle("Mein Konto");
+        setSize(1000, 600);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setResizable(false);
 
         JPanel panel = new JPanel();
-
         panel.setLayout(new GridLayout(8, 1, 10, 10));
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         JLabel titleLabel = new JLabel("Mein Konto");
-
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 26));
+        titleLabel.setFont(
+                new Font("SansSerif", Font.BOLD, 26)
+        );
 
         titleLabel.setForeground(new Color(128, 0, 180));
-
         nameLabel = new JLabel("Name: " + user.getName());
-
         emailLabel = new JLabel("E-Mail: " + user.getEmail());
-
         roleLabel = new JLabel("Rolle: " + user.getRole());
-
         addressLabel = new JLabel("Adresse: " + getAddressText());
 
         JButton editProfileButton = new JButton("Profil bearbeiten");
-
         editProfileButton.addActionListener(e -> openEditProfileFrame());
 
         editProfileButton.setBackground(new Color(128, 0, 180));
-
         editProfileButton.setForeground(Color.WHITE);
-
         editProfileButton.setFocusPainted(false);
-
-        editProfileButton.setFont(new Font("SansSerif", Font.BOLD,14));
+        editProfileButton.setFont(new Font("SansSerif", Font.BOLD, 14));
 
         JButton changePasswordButton = new JButton("Passwort ändern");
-
         changePasswordButton.addActionListener(e -> openChangePasswordFrame());
 
-        JButton closeButton = new JButton("Schließen");
+        changePasswordButton.setBackground(new Color(254, 52, 203));
+        changePasswordButton.setForeground(Color.WHITE);
+        changePasswordButton.setFocusPainted(false);
+        changePasswordButton.setFont(new Font("SansSerif", Font.BOLD, 14));
 
+        JButton closeButton = new JButton("Schließen");
         closeButton.addActionListener(e -> dispose());
+
+        closeButton.setBackground(new Color(255, 111, 111));
+        closeButton.setForeground(Color.WHITE);
+        closeButton.setFocusPainted(false);
+        closeButton.setFont(new Font("SansSerif", Font.BOLD, 14));
 
         panel.add(titleLabel);
         panel.add(nameLabel);
@@ -83,42 +85,26 @@ public class ProfileFrame extends JFrame {
 
         panel.setBackground(Color.WHITE);
 
-        panel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(
-                        new Color(128, 0, 180), 2),
+        panel.setBorder(
+                BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(new Color(128, 0, 180), 2),
                         BorderFactory.createEmptyBorder(20, 25, 20, 25)
                 )
         );
 
-        URL imageUrl = ProfileFrame.class.getResource("/ui/images/sportShop_background2.jpg");
+        URL imageUrl = ProfileFrame.class.getResource("/ui/images/sportShop_background10.png");
 
-        if (imageUrl != null) {
-            ImageIcon backgroundIcon = new ImageIcon(imageUrl);
+        Image backgroundImage = loadBackgroundImage();
 
-            JLabel backgroundLabel = new JLabel(backgroundIcon);
+        BackgroundPanel backgroundPanel = new BackgroundPanel(backgroundImage);
 
-            backgroundLabel.setLayout(new GridBagLayout());
+        backgroundPanel.setLayout(new GridBagLayout());
 
-            backgroundLabel.add(panel);
+        backgroundPanel.add(panel);
 
-            setContentPane(backgroundLabel);
+        setContentPane(backgroundPanel);
 
-        } else {
-
-            JPanel backgroundPanel = new JPanel(new GridBagLayout());
-
-            backgroundPanel.setPreferredSize(new Dimension(1000, 600));
-
-            backgroundPanel.setBackground(new Color(235, 235, 240));
-
-            backgroundPanel.add(panel);
-
-            setContentPane(backgroundPanel);
-        }
-        pack();
-        setLocationRelativeTo(null);
     }
-
     private String getAddressText() {
         if (user.getAddress() == null) {
             return "Keine Adresse gespeichert";
@@ -132,14 +118,13 @@ public class ProfileFrame extends JFrame {
             JOptionPane.showMessageDialog(
                     this,
                     "Passwortänderung ist hier nicht verfügbar.",
-                    "Fehler", JOptionPane.ERROR_MESSAGE);
-
+                    "Fehler",
+                    JOptionPane.ERROR_MESSAGE
+            );
             return;
         }
 
         ChangePasswordFrame changePasswordFrame = new ChangePasswordFrame(userService, user);
-
-        changePasswordFrame.setLocationRelativeTo(this);
         changePasswordFrame.setVisible(true);
     }
 
@@ -151,34 +136,66 @@ public class ProfileFrame extends JFrame {
                     "Fehler",
                     JOptionPane.ERROR_MESSAGE
             );
-
             return;
         }
 
         EditProfileFrame editProfileFrame = new EditProfileFrame(userService, user);
 
-        editProfileFrame.addWindowListener(
-                new java.awt.event.WindowAdapter() {
+        editProfileFrame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                refreshProfileData();
+            }
+        });
 
-                    @Override
-                    public void windowClosed(
-                            java.awt.event.WindowEvent e) {
-
-                        refreshProfileData();
-                    }
-                });
-
-        editProfileFrame.setLocationRelativeTo(this);
         editProfileFrame.setVisible(true);
     }
 
     private void refreshProfileData() {
         nameLabel.setText("Name: " + user.getName());
-
         emailLabel.setText("E-Mail: " + user.getEmail());
-
         roleLabel.setText("Rolle: " + user.getRole());
-
         addressLabel.setText("Adresse: " + getAddressText());
+    }
+
+    private Image loadBackgroundImage() {
+
+        URL imageUrl = ProfileFrame.class.getResource("/ui/images/sportShop_background10.png");
+
+        if (imageUrl != null) {
+            return new ImageIcon(imageUrl).getImage();
+        }
+
+        JOptionPane.showMessageDialog(
+                this,
+                "Das Hintergrundbild wurde nicht gefunden.",
+                "Bild fehlt",
+                JOptionPane.ERROR_MESSAGE);
+
+        return null;
+    }
+
+    private static class BackgroundPanel extends JPanel {
+
+        private final Image backgroundImage;
+
+        public BackgroundPanel(Image backgroundImage) {
+
+            this.backgroundImage = backgroundImage;
+
+            setPreferredSize(new Dimension(1000, 600));
+        }
+
+        @Override
+        protected void paintComponent(Graphics graphics) {
+
+            super.paintComponent(graphics);
+
+            if (backgroundImage == null) {
+                return;
+            }
+
+            graphics.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        }
     }
 }
