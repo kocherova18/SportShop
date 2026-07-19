@@ -15,13 +15,17 @@ public class RegisterFrame extends JFrame {
         this.userService = userService;
 
         setTitle("Registrierung");
-        setSize(350, 200);
+        setSize(430, 260);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(3, 2, 10, 10));
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        panel.setBorder(
+                BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(new Color(128, 0, 180), 2),
+                        BorderFactory.createEmptyBorder(20, 20, 20, 20))
+        );
 
         JLabel emailLabel = new JLabel("E-Mail:");
         emailField = new JTextField();
@@ -30,8 +34,13 @@ public class RegisterFrame extends JFrame {
         passwordField = new JPasswordField();
 
         JButton registerButton = new JButton("Registrieren");
-
         registerButton.addActionListener(e -> registerUser());
+
+        registerButton.setBackground(new Color(210, 170, 230));
+
+        registerButton.setForeground(Color.BLACK);
+        registerButton.setFocusPainted(false);
+
 
         panel.add(emailLabel);
         panel.add(emailField);
@@ -42,7 +51,14 @@ public class RegisterFrame extends JFrame {
         panel.add(new JLabel(""));
         panel.add(registerButton);
 
-        add(panel);
+        panel.setPreferredSize(new Dimension(330, 170));
+
+        panel.setBackground(Color.WHITE);
+
+        JPanel backgroundPanel = new JPanel(new GridBagLayout());
+        backgroundPanel.setBackground(new Color(245, 245, 250));
+        backgroundPanel.add(panel);
+        setContentPane(backgroundPanel);
     }
 
     private void registerUser() {
