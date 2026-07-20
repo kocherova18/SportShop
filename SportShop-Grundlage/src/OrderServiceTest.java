@@ -1,6 +1,7 @@
 import data.DataManager;
 import java.util.ArrayList;
 import java.util.List;
+import model.Address;
 import model.Order;
 import model.Product;
 import model.User;
@@ -19,12 +20,20 @@ public class OrderServiceTest {
         CartService cartService =
                 new CartService(dataManager1, 1);
 
+        Address address = new Address(
+                "Musterstraße",
+                "5",
+                "10115",
+                "Berlin",
+                "Deutschland"
+        );
+
         User customer1 = new User(
                 1,
                 "Anna",
                 "anna@test.de",
                 "passwort",
-                null,
+                address,
                 User.ROLE_CUSTOMER
         );
 
