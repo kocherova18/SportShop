@@ -9,7 +9,7 @@ import service.UserService;
 public class ProfileFrame extends JFrame {
 
     private static final String BACKGROUND_IMAGE_NAME =
-            "sportShop_background2.jpg";
+            "sportShop_background10.png";
 
     private static final String BACKGROUND_IMAGE_PATH =
             "/ui/images/" + BACKGROUND_IMAGE_NAME;
