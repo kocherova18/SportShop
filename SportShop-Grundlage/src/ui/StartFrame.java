@@ -33,7 +33,7 @@ import service.UserService;
 public class StartFrame extends JFrame {
 
     private static final String BACKGROUND_IMAGE_NAME =
-            "sportShop_background10.png";
+            "sportShop_background1.png";
 
     private static final String BACKGROUND_IMAGE_PATH =
             "/ui/images/" + BACKGROUND_IMAGE_NAME;
