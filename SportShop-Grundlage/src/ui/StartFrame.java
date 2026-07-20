@@ -32,11 +32,11 @@ import service.UserService;
 
 public class StartFrame extends JFrame {
 
-    private static final String BACKGROUND_IMAGE_PATH =
-            "/ui/images/nike-wm.png";
+    private static final String BACKGROUND_IMAGE_NAME =
+            "sportShop_background10.png";
 
-    private static final String CART_ICON_PATH =
-            "/ui/images/cart-symbol.png";
+    private static final String BACKGROUND_IMAGE_PATH =
+            "/ui/images/" + BACKGROUND_IMAGE_NAME;
 
     private static final int TOP_PANEL_HEIGHT = 70;
 
@@ -265,26 +265,6 @@ public class StartFrame extends JFrame {
         JButton cartButton =
                 new JButton("Warenkorb");
 
-        ImageIcon cartIcon =
-                loadCartIcon();
-
-        if (cartIcon != null) {
-            cartButton.setIcon(cartIcon);
-        }
-
-        /*
-         * Der Text steht links
-         * und das Bild rechts.
-         */
-        cartButton.setHorizontalTextPosition(
-                SwingConstants.LEFT
-        );
-
-        cartButton.setVerticalTextPosition(
-                SwingConstants.CENTER
-        );
-
-        cartButton.setIconTextGap(8);
 
         cartButton.setPreferredSize(
                 new Dimension(
@@ -368,77 +348,6 @@ public class StartFrame extends JFrame {
     }
 
 
-    /*
-     * Lädt das Warenkorb-Bild
-     * und verkleinert es auf 42 x 42 Pixel.
-     */
-    private ImageIcon loadCartIcon() {
-
-        ImageIcon originalIcon = null;
-
-        /*
-         * Zuerst sucht Java das Bild
-         * über den Ressourcenpfad.
-         */
-        URL iconUrl =
-                StartFrame.class.getResource(
-                        CART_ICON_PATH
-                );
-
-        if (iconUrl != null) {
-
-            originalIcon =
-                    new ImageIcon(iconUrl);
-        }
-
-        /*
-         * Falls der Ressourcenpfad nicht funktioniert,
-         * werden normale Dateipfade geprüft.
-         */
-        if (originalIcon == null) {
-
-            String[] possiblePaths = {
-                    "src/ui/images/cart-symbol.png",
-                    "SportShop-Grundlage/src/ui/images/cart-symbol.png"
-            };
-
-            for (String path : possiblePaths) {
-
-                File iconFile =
-                        new File(path);
-
-                if (iconFile.exists()) {
-
-                    originalIcon =
-                            new ImageIcon(path);
-
-                    break;
-                }
-            }
-        }
-
-        /*
-         * Ohne gefundenes Bild wird kein Icon angezeigt.
-         */
-        if (originalIcon == null) {
-            return null;
-        }
-
-        /*
-         * Das große Bild wird auf die passende
-         * Größe für den Button verkleinert.
-         */
-        Image scaledImage =
-                originalIcon
-                        .getImage()
-                        .getScaledInstance(
-                                42,
-                                42,
-                                Image.SCALE_SMOOTH
-                        );
-
-        return new ImageIcon(scaledImage);
-    }
 
 
     /*
@@ -767,8 +676,9 @@ public class StartFrame extends JFrame {
          * werden normale Dateipfade geprüft.
          */
         String[] possiblePaths = {
-                "src/ui/images/nike-wm.png",
-                "SportShop-Grundlage/src/ui/images/nike-wm.png"
+                "src/ui/images/" + BACKGROUND_IMAGE_NAME,
+                "SportShop-Grundlage/src/ui/images/"
+                        + BACKGROUND_IMAGE_NAME
         };
 
         for (String path : possiblePaths) {
@@ -788,7 +698,8 @@ public class StartFrame extends JFrame {
                 this,
                 "Das Hintergrundbild wurde nicht gefunden.\n"
                         + "Erwarteter Ort:\n"
-                        + "src/ui/images/nike-wm.png",
+                        + "src/ui/images/"
+                        + BACKGROUND_IMAGE_NAME,
                 "Bild fehlt",
                 JOptionPane.ERROR_MESSAGE
         );

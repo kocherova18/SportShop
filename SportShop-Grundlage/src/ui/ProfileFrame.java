@@ -1,13 +1,19 @@
 package ui;
 
-import model.User;
-import javax.swing.*;
 import java.awt.*;
-import service.UserService;
-import ui.EditProfileFrame;
 import java.net.URL;
+import javax.swing.*;
+import model.User;
+import service.UserService;
 
 public class ProfileFrame extends JFrame {
+
+    private static final String BACKGROUND_IMAGE_NAME =
+            "sportShop_background2.jpg";
+
+    private static final String BACKGROUND_IMAGE_PATH =
+            "/ui/images/" + BACKGROUND_IMAGE_NAME;
+
     private User user;
     private UserService userService;
 
@@ -92,7 +98,6 @@ public class ProfileFrame extends JFrame {
                 )
         );
 
-        URL imageUrl = ProfileFrame.class.getResource("/ui/images/sportShop_background10.png");
 
         Image backgroundImage = loadBackgroundImage();
 
@@ -159,21 +164,43 @@ public class ProfileFrame extends JFrame {
     }
 
     private Image loadBackgroundImage() {
-
-        URL imageUrl = ProfileFrame.class.getResource("/ui/images/sportShop_background10.png");
+        URL imageUrl =
+                ProfileFrame.class.getResource(
+                        BACKGROUND_IMAGE_PATH
+                );
 
         if (imageUrl != null) {
             return new ImageIcon(imageUrl).getImage();
         }
 
+        String[] possiblePaths = {
+                "src/ui/images/" + BACKGROUND_IMAGE_NAME,
+                "SportShop-Grundlage/src/ui/images/"
+                        + BACKGROUND_IMAGE_NAME
+        };
+
+        for (String path : possiblePaths) {
+            java.io.File imageFile =
+                    new java.io.File(path);
+
+            if (imageFile.exists()) {
+                return new ImageIcon(path).getImage();
+            }
+        }
+
         JOptionPane.showMessageDialog(
                 this,
-                "Das Hintergrundbild wurde nicht gefunden.",
+                "Das Hintergrundbild wurde nicht gefunden.\n"
+                        + "Erwarteter Ort:\n"
+                        + "src/ui/images/"
+                        + BACKGROUND_IMAGE_NAME,
                 "Bild fehlt",
-                JOptionPane.ERROR_MESSAGE);
+                JOptionPane.ERROR_MESSAGE
+        );
 
         return null;
     }
+
 
     private static class BackgroundPanel extends JPanel {
 
