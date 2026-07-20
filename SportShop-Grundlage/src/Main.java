@@ -8,8 +8,7 @@ public class Main {
     public static void main(String[] args) {
         DataManager dataManager = new DataManager();
 
-        AdminService adminService =
-                new AdminService(dataManager);
+        AdminService adminService = new AdminService(dataManager);
 
         adminService.createDefaultAdminIfMissing();
 
