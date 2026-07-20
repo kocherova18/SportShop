@@ -2,10 +2,6 @@ package ui;
 
 
 import data.DataManager;
-import service.ProductService;
-import java.util.ArrayList;
-import java.util.List;
-import model.Product;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -30,6 +26,7 @@ import model.User;
 import service.CartService;
 import service.InvoiceService;
 import service.OrderService;
+import service.ProductService;
 import service.UserService;
 
 
@@ -233,6 +230,7 @@ public class StartFrame extends JFrame {
 
             OrderHistoryFrame frame =
                     new OrderHistoryFrame(
+                            orderService,
                             currentUser
                     );
 
